@@ -1,0 +1,45 @@
+{
+    "type": "position",
+    "position": {
+      "attributes": [{
+        "key": "class",
+        "value": "tab-text",
+        "index": 0,
+        "order": 0
+      }]
+    },
+    "operate": {
+      "type": "position",
+      "position": {
+        "tags": [{
+          "key": "a",
+          "index": -1,
+          "order": 0
+        }]
+      },
+      "operate": {
+        "type": "request",
+        "request": {
+          "url": "${referer}/%attr{href}",
+          "referer": null
+        },
+        "operate": {
+          "type": "position",
+          "position": {
+            "attributes": [{
+              "key": "class",
+              "value": "chapter-img",
+              "index": -1,
+              "order": 0
+            }]
+          },
+          "operate": {
+            "type": "download",
+            "download": {
+              "url": "src"
+            }
+          }
+        }
+      }
+  }
+}

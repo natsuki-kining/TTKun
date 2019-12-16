@@ -1,0 +1,35 @@
+{
+  "operate" : {
+    "type" : "position/download/request",//position则是定位这个（这个集合）元素，download则是下载操作,发送请求获取document
+    "position" : {
+      "attributes" : [
+        {
+          "key" : "key",
+          "value" : "value",
+          "index" : 0 ,//-1表示获取全部
+          "order" : 0 //这里不做层级处理，又element的下级这样处理
+        }
+      ],
+      "tags" : [
+        {
+          "key" : "key",
+          "index" : 0 ,//-1表示获取全部
+          "order" : 0 //这里不做层级处理，又element的下级这样处理
+        }
+      ]
+    },
+    "download" : {
+      "url": "src",//元素的attr键
+      "referer": null,//null表示使用默认值
+      "path": null,
+      "name": null
+    },
+    "request": {
+      "url": "src",//元素的attr键
+      "referer": null,//null表示使用默认值
+    },
+    "operate": {
+      //下一次的操作
+    }
+  }
+}
