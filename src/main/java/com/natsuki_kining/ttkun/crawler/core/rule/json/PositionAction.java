@@ -62,9 +62,9 @@ public class PositionAction {
             }
 
             if (index != -1) {
-                Element e = elements.get(index);
+                element = elements.get(index);
                 elements = new Elements();
-                elements.add(e);
+                elements.add(element);
             }
         }
         return elements;
