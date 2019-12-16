@@ -14,7 +14,7 @@ import java.lang.reflect.Field;
 import java.util.List;
 
 /**
- * TODO
+ * 根据定位信息获取元素
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/16 21:59
@@ -25,13 +25,12 @@ public class PositionAction {
 
     public Elements getElements(Element element, Position position) {
         Elements target = null;
-
-
         if (position.fieldIsNull()) {
             throw new RuleException("position 属性为空");
         }
         Field[] fields = Position.class.getDeclaredFields();
         for (Field field : fields) {
+            field.setAccessible(true);
             List<AbstractPosition> abstractPositions = null;
             try {
                 abstractPositions = (List<AbstractPosition>) field.get(position);
@@ -42,14 +41,20 @@ public class PositionAction {
             if (abstractPositions != null && abstractPositions.size() > 0) {
                 target = getElements(element, abstractPositions);
             }
-
         }
         return target;
     }
 
+    public Element getElement(Element element, Position position) {
+        Elements elements = getElements(element, position);
+        return elements.get(0);
+    }
+
     private Elements getElements(Element element, List<AbstractPosition> abstractPositions) {
         Elements elements = null;
-        abstractPositions.sort((p1, p2) -> p1.getOrder().compareTo(p2.getOrder()));
+        if (abstractPositions.size()>1){
+            abstractPositions.sort((p1, p2) -> p1.getOrder().compareTo(p2.getOrder()));
+        }
         for (int i = 0, size = abstractPositions.size(); i < size; i++) {
             AbstractPosition abstractPosition = abstractPositions.get(i);
             Integer index = abstractPosition.getIndex();
@@ -69,11 +74,5 @@ public class PositionAction {
         }
         return elements;
     }
-
-    public Element getElement(Element element, Position position) {
-        Elements elements = getElements(element, position);
-        return elements.get(0);
-    }
-
 
 }
