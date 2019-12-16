@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.context.annotation.Run;
 import com.natsuki_kining.ttkun.context.annotation.Value;
+import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.UrlUtil;
-import com.natsuki_kining.ttkun.crawler.model.rule.Operate;
+import com.natsuki_kining.ttkun.crawler.model.rule.JsonRule;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.Operate;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 
 import java.io.IOException;
@@ -18,24 +21,33 @@ import java.io.InputStream;
  * @Date 2019/12/15 11:26
  **/
 @Component
-public class JsonRule extends AbstractRule {
+@Slf4j
+public class JsonRuleAction extends AbstractRuleAction {
 
     @Value("manga.url.world-end-crusaders")
     private String url;
 
+    @Value
     private String ruleFilePath = "rule/";
 
-    @Run
     @Override
-    public void readRule() {
+    public JsonRule getRule() {
         String website = UrlUtil.getWebsite(url);
         InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ruleFilePath + website + ".json");
         try {
             String jsonString = IOUtils.toString(resourceAsStream,"UTF-8");
             Operate operate = JSON.parseObject(jsonString, Operate.class);
-            System.out.println(operate.getType());
+            return operate;
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(),e);
+            throw new RuleException(e.getMessage(),e);
         }
+    }
+
+    public void test(){
+        Operate operate = (Operate) getRule();
+        operate.getType();
+
+
     }
 }

@@ -1,4 +1,4 @@
-package com.natsuki_kining.ttkun.crawler.model.rule;
+package com.natsuki_kining.ttkun.crawler.model.rule.json;
 
 import lombok.Data;
 

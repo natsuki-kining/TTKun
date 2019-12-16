@@ -1,5 +1,6 @@
-package com.natsuki_kining.ttkun.crawler.model.rule;
+package com.natsuki_kining.ttkun.crawler.model.rule.json;
 
+import com.natsuki_kining.ttkun.crawler.model.rule.JsonRule;
 import lombok.Data;
 
 /**
@@ -9,7 +10,7 @@ import lombok.Data;
  * @Date 2019/12/15 23:02
  **/
 @Data
-public class Operate {
+public class Operate extends JsonRule {
 
     private String type;
 

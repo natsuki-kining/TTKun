@@ -1,4 +1,4 @@
-package com.natsuki_kining.ttkun.crawler.model.rule;
+package com.natsuki_kining.ttkun.crawler.model.rule.json;
 
 import lombok.Data;
 
@@ -17,5 +17,8 @@ public class Position {
 
     private List<Tag> tags;
 
-
+    public boolean fieldIsNull(){
+        return (attributes == null && attributes.size() == 0
+        && tags == null && tags.size() == 0);
+    }
 }
