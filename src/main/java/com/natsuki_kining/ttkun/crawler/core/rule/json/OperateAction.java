@@ -24,7 +24,6 @@ public class OperateAction implements IOperateAction {
     @Override
     public Object action(Operate operate) {
         Object object = getAction(operate).action(operate);
-
         return object;
     }
 

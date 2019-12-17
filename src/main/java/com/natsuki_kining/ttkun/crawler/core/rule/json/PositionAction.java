@@ -26,12 +26,12 @@ public class PositionAction implements IOperateAction {
         if (position == null){
             throw new RuleException("position 为空。");
         }
-
+        Element element = operate.getElement();
         Integer index = position.getIndex();
         if (index == -1){
-            return getElements(null,position);
+            return getElements(element,position);
         }else{
-            return getElement(null,position);
+            return getElement(element,position);
         }
     }
 

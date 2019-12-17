@@ -2,6 +2,7 @@ package com.natsuki_kining.ttkun.crawler.model.rule.json;
 
 import com.natsuki_kining.ttkun.crawler.model.rule.JsonRule;
 import lombok.Data;
+import org.jsoup.nodes.Element;
 
 /**
  * 一次操作，指向下一次操作
@@ -20,5 +21,10 @@ public class Operate extends JsonRule {
 
     private Request request;
 
-    private Operate operate;
+    private Operate lastStep;//上一步
+
+    private Operate nextStep;//下一步
+
+    private Element element;
+
 }

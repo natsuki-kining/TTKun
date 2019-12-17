@@ -1,40 +1,43 @@
 {
-  "type": "position",
-  "position": {
-    "type": "attribute",
-    "key": "class",
-    "value": "tab-text",
-    "index": 0
+  "type": "request",
+  "request": {
+    "url": "https://lhscan.net/manga-my-house-is-a-magic-power-spot-just-by-living-there-i-become-the-strongest-in-the-world-raw.html",
+    "name": "test"
   },
-  "operate": {
+  "nextStep": {
     "type": "position",
     "position": {
-      "type": "tag",
-      "key": "a",
-      "index": -1
+      "type": "attribute",
+      "key": "class",
+      "value": "tab-text",
+      "index": 0
     },
-    "operate": {
-      "type": "request",
-      "request": {
-        "url": "${referer}/%attr{href}",
-        "referer": null
+    "nextStep": {
+      "type": "position",
+      "position": {
+        "type": "tag",
+        "key": "a",
+        "index": -1
       },
-      "operate": {
-        "type": "position",
-        "position": {
-          "attributes": [
-            {
-              "key": "class",
-              "value": "chapter-img",
-              "index": -1,
-              "order": 0
-            }
-          ]
+      "nextStep": {
+        "type": "request",
+        "request": {
+          "url": "${referer}/%attr{href}",
+          "urlName": "title"
         },
-        "operate": {
-          "type": "download",
-          "download": {
-            "url": "src"
+        "nextStep": {
+          "type": "position",
+          "position": {
+            "type": "attribute",
+            "key": "class",
+            "value": "chapter-img",
+            "index": -1
+          },
+          "nextStep": {
+            "type": "download",
+            "download": {
+              "url": "src"
+            }
           }
         }
       }

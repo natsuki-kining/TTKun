@@ -1,5 +1,4 @@
 {
-  "operate" : {
     "type" : "position/download/request",//position则是定位这个（这个集合）元素，download则是下载操作,发送请求获取document
     "position" : {
       "type": "attribute/tag",
@@ -15,10 +14,10 @@
     },
     "request": {
       "url": "src",//元素的attr键
-      "referer": null,//null表示使用默认值
+      "referer": null,//null表示使用默认值,
+      "urlName": null //链接的名字，元素的attribute key
     },
-    "operate": {
+    "nextStep": {
       //下一次的操作
     }
-  }
 }

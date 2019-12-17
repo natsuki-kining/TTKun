@@ -12,5 +12,4 @@ import lombok.Data;
 public class Download extends AbstractRequest {
 
     private String path;
-    private String name;
 }

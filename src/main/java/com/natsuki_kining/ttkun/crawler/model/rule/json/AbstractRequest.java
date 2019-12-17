@@ -13,6 +13,7 @@ import lombok.Data;
 public abstract class AbstractRequest extends JsonRule {
 
     private String url;
+    private String name;
     private String referer;
     private String method;
 

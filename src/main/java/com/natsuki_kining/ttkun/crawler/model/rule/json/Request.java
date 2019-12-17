@@ -11,4 +11,5 @@ import lombok.Data;
 @Data
 public class Request extends AbstractRequest {
 
+    private String urlName;
 }
