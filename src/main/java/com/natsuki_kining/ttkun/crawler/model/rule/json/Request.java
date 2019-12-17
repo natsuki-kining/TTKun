@@ -9,9 +9,6 @@ import lombok.Data;
  * @Date 2019/12/15 23:09
  **/
 @Data
-public class Request {
-
-    private String url;
-    private String referer;
+public class Request extends AbstractRequest {
 
 }

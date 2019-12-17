@@ -11,4 +11,6 @@ import com.natsuki_kining.ttkun.crawler.model.rule.Rule;
 public abstract class AbstractRuleAction {
 
     public abstract Rule getRule();
+
+    public abstract Rule getRule(String ruleFile);
 }

@@ -1,4 +1,4 @@
-package com.natsuki_kining.ttkun.crawler.model;
+package com.natsuki_kining.ttkun.crawler.model.http;
 
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.context.annotation.Value;
@@ -15,7 +15,7 @@ import java.util.Map;
  **/
 @Component
 @Getter
-public class Request {
+public class HttpRequest {
 
     @Value("request.timeout")
     private Integer timeout;//请求超时时间,默认20秒
