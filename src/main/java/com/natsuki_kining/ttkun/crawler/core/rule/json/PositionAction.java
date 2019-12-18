@@ -57,7 +57,7 @@ public class PositionAction implements IOperateAction {
         if (index != -1) {
             Element e = target.get(index);
             target = new Elements();
-            target.add(element);
+            target.add(e);
         }
         return target;
     }

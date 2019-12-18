@@ -10,7 +10,8 @@
       "url": "src",//元素的attr键
       "referer": null,//null表示使用默认值
       "path": null,
-      "name": null
+      "name": null,
+      "downloadType": "imageDownload"//下载方式 有些方式需要特殊处理、默认imageDownload
     },
     "request": {
       "url": "src",//元素的attr键

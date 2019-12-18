@@ -10,4 +10,10 @@ import com.natsuki_kining.ttkun.context.annotation.Component;
  **/
 @Component
 public class ImageDownload extends AbstractDownload{
+
+    @Override
+    public void download(String url, String referer, String savePath, String fileName) {
+        super.download(url, referer, savePath, fileName);
+    }
+
 }

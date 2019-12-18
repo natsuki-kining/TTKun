@@ -1,6 +1,8 @@
 package com.natsuki_kining.ttkun.crawler.common.utils;
 
 import java.net.URL;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * TODO
@@ -10,4 +12,13 @@ import java.net.URL;
  **/
 public class StringUtil {
 
+    public static String replaceBlank(String str) {
+        String dest = "";
+        if (str!=null) {
+            Pattern p = Pattern.compile("\\s*|\t|\r|\n");
+            Matcher m = p.matcher(str);
+            dest = m.replaceAll("");
+        }
+        return dest;
+    }
 }

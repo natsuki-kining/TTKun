@@ -36,7 +36,8 @@
           "nextStep": {
             "type": "download",
             "download": {
-              "url": "src"
+              "url": "src",
+              "downloadType": "imageDownload"
             }
           }
         }
