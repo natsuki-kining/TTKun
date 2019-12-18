@@ -7,12 +7,12 @@ import com.natsuki_kining.ttkun.context.variables.SystemVariables;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.StringUtil;
 import com.natsuki_kining.ttkun.crawler.core.download.AbstractDownload;
-import com.natsuki_kining.ttkun.crawler.core.download.ImageDownload;
 import com.natsuki_kining.ttkun.crawler.model.enums.DownloadType;
 import com.natsuki_kining.ttkun.crawler.model.http.HttpRequest;
-import com.natsuki_kining.ttkun.crawler.model.rule.json.Download;
-import com.natsuki_kining.ttkun.crawler.model.rule.json.Operate;
-import com.natsuki_kining.ttkun.crawler.model.rule.json.Request;
+import com.natsuki_kining.ttkun.crawler.model.pojo.DownloadPOJO;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.DownloadRule;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
@@ -37,92 +37,103 @@ public class DownloadAction implements IOperateAction {
 
     @Value("save.path")
     private String savePath;
-//    @Value("download.use.multithreading.enable")
-    private Boolean multithreadingEnable=false;
+    @Value("download.use.multithreading.enable")
+    private Boolean multithreadingEnable;
 
     @Override
-    public Object action(Operate operate) {
-        Download download = operate.getDownload();
-        if (download == null){
-            throw new RuleException("download 为空。");
+    public Object action(OperateRule operateRule) {
+        DownloadRule downloadRule = operateRule.getDownload();
+        if (downloadRule == null){
+            throw new RuleException("downloadRule 为空。");
         }
-        init(operate);
-        log.info("下载文件：{}",download.getUrl());
-        AbstractDownload abstractDownload = getDownloadType(download);
+        DownloadPOJO downloadPOJO = init(operateRule);
+        log.info("下载文件：{}",downloadPOJO.getUrl());
+        AbstractDownload abstractDownload = getDownloadType(downloadRule);
         if (multithreadingEnable){
             new Thread(()->{
-                abstractDownload.download(download.getUrl(), download.getReferer(), download.getPath(), download.getName());
+                abstractDownload.download(downloadPOJO.getUrl(), downloadPOJO.getReferer(), downloadPOJO.getPath(), downloadPOJO.getName());
             }).start();
         }else {
-            abstractDownload.download(download.getUrl(), download.getReferer(), download.getPath(), download.getName());
+            abstractDownload.download(downloadPOJO.getUrl(), downloadPOJO.getReferer(), downloadPOJO.getPath(), downloadPOJO.getName());
         }
-        return operate.getElement();
+        return operateRule.getElement();
     }
 
-    private AbstractDownload getDownloadType(Download download) {
-        String downloadType = download.getDownloadType();
+    private AbstractDownload getDownloadType(DownloadRule downloadRule) {
+        String downloadType = downloadRule.getDownloadType();
         if (StringUtils.isBlank(downloadType)){
             downloadType = DownloadType.IMAGE_DOWNLOAD.toString();
         }
         AbstractDownload abstractDownload = downloadMap.get(downloadType);
         if (abstractDownload == null){
-            log.error("找不到 指定的下载类型：{}",downloadType);
             throw new RuleException("找不到 指定的下载类型："+downloadType);
         }
         return abstractDownload;
     }
 
-    private void init(Operate operate){
-        Element element = operate.getElement();
-        Download download = operate.getDownload();
+    private DownloadPOJO init(OperateRule operateRule){
+        Element element = operateRule.getElement();
+        DownloadRule downloadRule = operateRule.getDownload();
+
+        DownloadPOJO download = new DownloadPOJO();
 
         //设置url
-        String url = element.attr(download.getUrl());
+        String url = downloadRule.getUrl();
+        if (StringUtils.isBlank(url)){
+            url = element.attr(downloadRule.getUrlAttr());
+        }
         url = StringUtil.replaceBlank(url);
         download.setUrl(url);
 
         //设置name
         String name = "";
-        if (download.getName() == null){
-            int index = element.elementSiblingIndex() + 1;
-            name = index+url.substring(url.lastIndexOf("."));
+        if (downloadRule.getName() == null){
+            log.info("elementSiblingIndex:{}",element.elementSiblingIndex());
+            log.info("siblingIndex:{}",element.siblingIndex());
+            name = operateRule.getIndex()+url.substring(url.lastIndexOf("."));
         }else{
-            name = element.attr(download.getName());
+            name = element.attr(downloadRule.getName());
         }
         name = StringUtil.replaceBlank(name);
         download.setName(name);
 
         //设置referer
         String referer = httpRequest.getReferer();
-        if (StringUtils.isNotBlank(download.getReferer())){
-            referer = download.getReferer();
+        if (StringUtils.isNotBlank(downloadRule.getReferer())){
+            referer = downloadRule.getReferer();
         }
         download.setReferer(referer);
 
         //设置path
         String path = "";
         String lastUrlName = "";
-        Request request = getLastRequest(operate);
-        if (request != null){
-            lastUrlName = request.getUrlName();
+        OperateRule or = getLastRequest(operateRule);
+        if (or != null){
+            RequestRule rr = or.getRequest();
+            Element oe = or.getElement();
+            if (StringUtils.isNotBlank(rr.getUrlName())){
+                lastUrlName = oe.attr(rr.getUrlName());
+            }
         }
-        if (StringUtils.isNotBlank(download.getPath())){
-            path = download.getPath();
+        if (StringUtils.isNotBlank(downloadRule.getPath())){
+            path = downloadRule.getPath();
         }else{
             path = savePath + SystemVariables.FILE_SEPARATOR + lastUrlName + SystemVariables.FILE_SEPARATOR;
         }
         download.setPath(path);
+
+        return download;
     }
 
 
-    private Request getLastRequest(Operate operate){
-        if (operate == null){
+    private OperateRule getLastRequest(OperateRule operateRule){
+        if (operateRule == null){
             return null;
         }
-        if (operate.getRequest() != null){
-            return operate.getRequest();
+        if (operateRule.getRequest() != null){
+            return operateRule;
         }
-        return getLastRequest(operate.getLastStep());
+        return getLastRequest(operateRule.getLastStep());
     }
 
 }

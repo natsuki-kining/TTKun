@@ -9,7 +9,7 @@ import lombok.Data;
  * @Date 2019/12/15 23:09
  **/
 @Data
-public class Request extends AbstractRequest {
+public class RequestRule extends AbstractRequestRule {
 
     private String urlName;
 }

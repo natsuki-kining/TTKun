@@ -1,4 +1,4 @@
-package com.natsuki_kining.ttkun.crawler.core.analysis.html;
+package com.natsuki_kining.ttkun.crawler.core.request.html;
 
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;

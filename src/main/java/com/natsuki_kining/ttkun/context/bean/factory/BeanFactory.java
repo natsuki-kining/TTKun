@@ -8,5 +8,5 @@ package com.natsuki_kining.ttkun.context.bean.factory;
  **/
 public interface BeanFactory {
 
-    Object create(Class<?> beanClass) throws Exception;
+    <T> Object create(Class<T> beanClass) throws Exception;
 }

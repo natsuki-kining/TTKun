@@ -3,10 +3,11 @@ package com.natsuki_kining.ttkun.crawler.core.rule.json;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
-import com.natsuki_kining.ttkun.crawler.core.analysis.html.HtmlDelegate;
+import com.natsuki_kining.ttkun.crawler.core.request.html.HtmlDelegate;
 import com.natsuki_kining.ttkun.crawler.model.http.HttpRequest;
-import com.natsuki_kining.ttkun.crawler.model.rule.json.Operate;
-import com.natsuki_kining.ttkun.crawler.model.rule.json.Request;
+import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -29,37 +30,41 @@ public class RequestAction implements IOperateAction {
     private HttpRequest httpRequest;
 
     @Override
-    public Document action(Operate operate) {
-        Request request = operate.getRequest();
-        Element element = operate.getElement();
-        if(request == null){
-            throw new RuleException("request 为空。");
+    public Document action(OperateRule operateRule) {
+        if(operateRule.getRequest() == null){
+            throw new RuleException("requestRule 为空。");
         }
-        init(request,element);
+        RequestPOJO requestPOJO = init(operateRule);
 
-        httpRequest.setUrl(request.getUrl());
-        if (StringUtils.isNotBlank(request.getReferer())){
-            httpRequest.setReferer(request.getReferer());
+        httpRequest.setUrl(requestPOJO.getUrl());
+        if (StringUtils.isNotBlank(requestPOJO.getReferer())){
+            httpRequest.setReferer(requestPOJO.getReferer());
         }
         String html = htmlDelegate.getHtml(httpRequest);
         return Jsoup.parse(html);
     }
 
-    private void init(Request request,Element element) {
-        String url = request.getUrl();
+    private RequestPOJO init(OperateRule operateRule) {
+        Element element = operateRule.getElement();
+        RequestRule requestRule = operateRule.getRequest();
+        RequestPOJO requestPOJO = new RequestPOJO();
+        requestPOJO.setReferer(requestRule.getReferer());
+
+        String url = requestRule.getUrl();
         if (StringUtils.isNotBlank(url) && !url.startsWith("http")){
             if (url.contains("$") || url.contains("%")){
                 url = getUrlValue(url,element);
             }else{
-                url = element.attr(request.getUrl());
+                url = element.attr(requestRule.getUrl());
             }
         }
-        request.setUrl(url);
+        requestPOJO.setUrl(url);
 
-        if (StringUtils.isNotBlank(request.getUrlName())){
-            String urlName = element.attr(request.getUrlName());
-            request.setUrlName(urlName);
+        if (StringUtils.isNotBlank(requestRule.getUrlName())){
+            String urlName = element.attr(requestRule.getUrlName());
+            requestPOJO.setUrlName(urlName);
         }
+        return requestPOJO;
     }
 
     private String getUrlValue(String url, Element element) {

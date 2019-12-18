@@ -9,7 +9,7 @@ import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.UrlUtil;
 import com.natsuki_kining.ttkun.crawler.core.rule.json.OperateAction;
 import com.natsuki_kining.ttkun.crawler.model.rule.JsonRule;
-import com.natsuki_kining.ttkun.crawler.model.rule.json.Operate;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -42,8 +42,8 @@ public class JsonRuleAction extends AbstractRuleAction {
         InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ruleFilePath + website + ".json");
         try {
             String jsonString = IOUtils.toString(resourceAsStream, "UTF-8");
-            Operate operate = JSON.parseObject(jsonString, Operate.class);
-            return operate;
+            OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
+            return operateRule;
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new RuleException(e.getMessage(), e);
@@ -55,8 +55,8 @@ public class JsonRuleAction extends AbstractRuleAction {
         File file = new File(ruleFile);
         try {
             String jsonString = FileUtils.readFileToString(file, "UTF-8");
-            Operate operate = JSON.parseObject(jsonString, Operate.class);
-            return operate;
+            OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
+            return operateRule;
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new RuleException(e.getMessage(), e);
@@ -71,30 +71,28 @@ public class JsonRuleAction extends AbstractRuleAction {
 
     @Run
     public void action() {
-        Operate operate = (Operate) getRule();
-        action(operate);
+        OperateRule operateRule = (OperateRule) getRule();
+        action(operateRule);
     }
 
-    private void action(Operate p) {
+    private void action(OperateRule p) {
         Object object = operateAction.action(p);
-        Operate operate = p.getNextStep();
-        if (operate != null) {
+        OperateRule operateRule = p.getNextStep();
+        if (operateRule != null) {
             if (object instanceof Elements) {
                 Elements elements = (Elements) object;
-                elements.forEach(element -> {
-                    action(operate, p, element);
-                });
+                elements.forEach(element -> action(operateRule, p, element));
             } else if (object instanceof Element) {
                 Element element = (Element) object;
-                action(operate, p, element);
+                action(operateRule, p, element);
             }
         }
     }
 
-    private void action(Operate operate, Operate p, Element element) {
-        operate.setElement(element);
-        operate.setLastStep(p);
-        action(operate);
+    private void action(OperateRule operateRule, OperateRule p, Element element) {
+        operateRule.setElement(element);
+        operateRule.setLastStep(p);
+        action(operateRule);
     }
 
 }

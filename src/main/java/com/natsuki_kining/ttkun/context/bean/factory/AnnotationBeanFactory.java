@@ -22,7 +22,7 @@ public class AnnotationBeanFactory implements BeanFactory {
     }
 
     @Override
-    public Object create(Class<?> beanClass) {
+    public <T> Object create(Class<T> beanClass) {
         Object o = null;
         try {
             o = beanClass.newInstance();

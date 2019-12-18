@@ -3,7 +3,7 @@ package com.natsuki_kining.ttkun.crawler.core.analysis;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.context.annotation.Value;
-import com.natsuki_kining.ttkun.crawler.core.analysis.html.HtmlDelegate;
+import com.natsuki_kining.ttkun.crawler.core.request.html.HtmlDelegate;
 import com.natsuki_kining.ttkun.crawler.core.download.ImageDownload;
 import com.natsuki_kining.ttkun.crawler.model.http.HttpRequest;
 import lombok.extern.slf4j.Slf4j;

@@ -2,8 +2,8 @@ package com.natsuki_kining.ttkun.crawler.core.rule.json;
 
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
-import com.natsuki_kining.ttkun.crawler.model.rule.json.Operate;
-import com.natsuki_kining.ttkun.crawler.model.rule.json.Position;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.PositionRule;
 import com.natsuki_kining.ttkun.crawler.model.enums.PositionType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -21,32 +21,32 @@ import org.jsoup.select.Elements;
 public class PositionAction implements IOperateAction {
 
     @Override
-    public Object action(Operate operate) {
-        Position position = operate.getPosition();
-        if (position == null){
-            throw new RuleException("position 为空。");
+    public Object action(OperateRule operateRule) {
+        PositionRule positionRule = operateRule.getPosition();
+        if (positionRule == null){
+            throw new RuleException("positionRule 为空。");
         }
-        Element element = operate.getElement();
-        Integer index = position.getIndex();
+        Element element = operateRule.getElement();
+        Integer index = positionRule.getIndex();
         if (index == -1){
-            return getElements(element,position);
+            return getElements(element,positionRule);
         }else{
-            return getElement(element,position);
+            return getElement(element,positionRule);
         }
     }
 
-    private Elements getElements(Element element, Position position) {
+    private Elements getElements(Element element, PositionRule positionRule) {
         Elements target = null;
-        if (position == null) {
-            throw new RuleException("position 为空");
+        if (positionRule == null) {
+            throw new RuleException("positionRule 为空");
         }
-        String type = position.getType();
+        String type = positionRule.getType();
         if (StringUtils.isBlank(type)) {
-            throw new RuleException("position type为空");
+            throw new RuleException("positionRule type为空");
         }
-        String key = position.getKey();
-        String value = position.getValue();
-        Integer index = position.getIndex();
+        String key = positionRule.getKey();
+        String value = positionRule.getValue();
+        Integer index = positionRule.getIndex();
         if (PositionType.ATTRIBUTE.toString().equals(type)){
             target = element.getElementsByAttributeValue(key, value);
         }else if(PositionType.TAG.toString().equals(type)){
@@ -62,8 +62,8 @@ public class PositionAction implements IOperateAction {
         return target;
     }
 
-    private Element getElement(Element element, Position position) {
-        Elements elements = getElements(element, position);
+    private Element getElement(Element element, PositionRule positionRule) {
+        Elements elements = getElements(element, positionRule);
         return elements.get(0);
     }
 

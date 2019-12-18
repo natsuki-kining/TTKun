@@ -1,5 +1,6 @@
 {
     "type" : "position/download/request",//position则是定位这个（这个集合）元素，download则是下载操作,发送请求获取document
+    "index": 0,
     "position" : {
       "type": "attribute/tag",
       "key" : "key",
@@ -7,7 +8,8 @@
       "index" : 0 //-1表示获取全部
     },
     "download" : {
-      "url": "src",//元素的attr键
+      "url": "url",
+      "urlAttr": "src",//元素url的attr键
       "referer": null,//null表示使用默认值
       "path": null,
       "name": null,
@@ -15,6 +17,7 @@
     },
     "request": {
       "url": "src",//元素的attr键
+      "type": "html",//请求返回的类型
       "referer": null,//null表示使用默认值,
       "urlName": null //链接的名字，元素的attribute key
     },

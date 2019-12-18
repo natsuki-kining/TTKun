@@ -4,16 +4,16 @@ import com.natsuki_kining.ttkun.crawler.model.rule.JsonRule;
 import lombok.Data;
 
 /**
- * TODO
+ * 发送请求的抽象类
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:28
  **/
 @Data
-public abstract class AbstractRequest extends JsonRule {
+public abstract class AbstractRequestRule extends JsonRule {
 
     private String url;
-    private String name;
+    private String urlAttr;
     private String referer;
     private String method;
 

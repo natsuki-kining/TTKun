@@ -1,5 +1,6 @@
 package com.natsuki_kining.ttkun.crawler.core.download;
 
+import com.natsuki_kining.ttkun.crawler.common.utils.FileUtil;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -38,6 +39,7 @@ public abstract class AbstractDownload {
 
     private void writeImageToDisk(byte[] img, String filePath, String fileName) {
         try {
+            FileUtil.createPath(filePath);
             OutputStream out = new FileOutputStream(filePath + "\\" + fileName);
             out.write(img);
             out.flush();

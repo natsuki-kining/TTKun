@@ -12,7 +12,7 @@ import java.util.List;
  * @Date 2019/12/15 23:03
  **/
 @Data
-public class Position extends JsonRule {
+public class PositionRule extends JsonRule {
 
     private String type;
     private String key;

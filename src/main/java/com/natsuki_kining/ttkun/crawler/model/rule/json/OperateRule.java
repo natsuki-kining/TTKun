@@ -11,19 +11,21 @@ import org.jsoup.nodes.Element;
  * @Date 2019/12/15 23:02
  **/
 @Data
-public class Operate extends JsonRule {
+public class OperateRule extends JsonRule {
 
     private String type;
 
-    private Position position;
+    private Integer index;
 
-    private Download download;
+    private PositionRule position;
 
-    private Request request;
+    private DownloadRule download;
 
-    private Operate lastStep;//上一步
+    private RequestRule request;
 
-    private Operate nextStep;//下一步
+    private OperateRule lastStep;//上一步
+
+    private OperateRule nextStep;//下一步
 
     private Element element;
 

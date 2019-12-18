@@ -1,6 +1,6 @@
 package com.natsuki_kining.ttkun.crawler.core.rule.json;
 
-import com.natsuki_kining.ttkun.crawler.model.rule.json.Operate;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 
 /**
  * TODO
@@ -10,5 +10,5 @@ import com.natsuki_kining.ttkun.crawler.model.rule.json.Operate;
  **/
 public interface IOperateAction {
 
-    Object action(Operate operate);
+    Object action(OperateRule operateRule);
 }
