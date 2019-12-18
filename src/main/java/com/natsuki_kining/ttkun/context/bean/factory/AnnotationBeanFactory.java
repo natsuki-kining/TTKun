@@ -22,7 +22,7 @@ public class AnnotationBeanFactory implements BeanFactory {
     }
 
     @Override
-    public <T> Object create(Class<T> beanClass) {
+    public <T> T create(Class<T> beanClass) {
         Object o = null;
         try {
             o = beanClass.newInstance();
@@ -30,7 +30,7 @@ public class AnnotationBeanFactory implements BeanFactory {
             log.error(e.getMessage(),e);
             System.exit(1);
         }
-        return o;
+        return (T)o;
     }
 
     public AnnotationBeanWrapper createBeanWrapper() {
