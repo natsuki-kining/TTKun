@@ -19,6 +19,7 @@ import org.jsoup.select.Elements;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.stream.Stream;
 
 /**
  * 读取自定义json规则
@@ -34,7 +35,12 @@ public class JsonRuleAction extends AbstractRuleAction {
     private String url;
 
     @Value
-    private String ruleFilePath = "rule/";
+    private String ruleFilePath;
+
+    @Autowired
+    private OperateAction operateAction;
+
+    private String defaultRuleFilePath = "rule/";
 
     @Override
     public JsonRule getRule() {
@@ -63,12 +69,6 @@ public class JsonRuleAction extends AbstractRuleAction {
         }
     }
 
-    @Value("save.path")
-    private String savePath;
-
-    @Autowired
-    private OperateAction operateAction;
-
     @Run
     public void action() {
         OperateRule operateRule = (OperateRule) getRule();
@@ -81,7 +81,14 @@ public class JsonRuleAction extends AbstractRuleAction {
         if (operateRule != null) {
             if (object instanceof Elements) {
                 Elements elements = (Elements) object;
-                elements.forEach(element -> action(operateRule, p, element));
+                Stream.iterate(0, i -> i + 1)
+                        .limit(elements.size())
+                        .forEach(index -> {
+                            Element element = elements.get(index);
+                            OperateRule operateRuleClone = (OperateRule) operateRule.clone();
+                            operateRuleClone.setListIndex(index + 1);
+                            action(operateRuleClone, p, element);
+                        });
             } else if (object instanceof Element) {
                 Element element = (Element) object;
                 action(operateRule, p, element);

@@ -47,7 +47,6 @@ public class DownloadAction implements IOperateAction {
             throw new RuleException("downloadRule 为空。");
         }
         DownloadPOJO downloadPOJO = init(operateRule);
-        log.info("下载文件：{}",downloadPOJO.getUrl());
         AbstractDownload abstractDownload = getDownloadType(downloadRule);
         if (multithreadingEnable){
             new Thread(()->{
@@ -88,9 +87,7 @@ public class DownloadAction implements IOperateAction {
         //设置name
         String name = "";
         if (downloadRule.getName() == null){
-            log.info("elementSiblingIndex:{}",element.elementSiblingIndex());
-            log.info("siblingIndex:{}",element.siblingIndex());
-            name = operateRule.getIndex()+url.substring(url.lastIndexOf("."));
+            name = operateRule.getListIndex()+url.substring(url.lastIndexOf("."));
         }else{
             name = element.attr(downloadRule.getName());
         }
