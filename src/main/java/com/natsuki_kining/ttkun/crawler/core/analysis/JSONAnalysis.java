@@ -3,9 +3,9 @@ package com.natsuki_kining.ttkun.crawler.core.analysis;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.context.annotation.Value;
-import com.natsuki_kining.ttkun.crawler.core.request.html.HtmlDelegate;
+import com.natsuki_kining.ttkun.crawler.core.request.convert.HtmlConvert;
 import com.natsuki_kining.ttkun.crawler.core.download.ImageDownload;
-import com.natsuki_kining.ttkun.crawler.model.http.HttpRequest;
+import com.natsuki_kining.ttkun.crawler.model.http.HttpServerRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -33,16 +33,17 @@ public class JSONAnalysis extends AbstractAnalysis {
     private String savePath;
 
     @Autowired
-    private HtmlDelegate htmlDelegate;
+    private HtmlConvert htmlDelegate;
     @Autowired
-    private HttpRequest httpRequest;
+    private HttpServerRequest httpServerRequest;
     @Autowired
     private ImageDownload imageDownload;
 
 //    @Run
     public void doIt() {
-        httpRequest.setUrl(url);
-        String html = htmlDelegate.getHtml(httpRequest);
+        httpServerRequest.setUrl(url);
+        String html = "";
+//                htmlDelegate.getHtml(httpRequest);
         Document document = Jsoup.parse(html);
         Element tabTextElement = document.getElementsByClass("tab-text").get(0);
         Elements chapterElements = tabTextElement.getElementsByTag("a");
@@ -55,9 +56,9 @@ public class JSONAnalysis extends AbstractAnalysis {
                 file.mkdirs();
             }
             String href = chapterElement.attr("href");
-            String imageUrl = httpRequest.getReferer()+"/"+href;
-            httpRequest.setUrl(imageUrl);
-            html = htmlDelegate.getHtml(httpRequest);
+            String imageUrl = httpServerRequest.getReferer()+"/"+href;
+            httpServerRequest.setUrl(imageUrl);
+//            html = htmlDelegate.getHtml(httpRequest);
             document = Jsoup.parse(html);
 
             Elements imageElements = document.getElementsByClass("chapter-img");
@@ -70,7 +71,7 @@ public class JSONAnalysis extends AbstractAnalysis {
                 String imageName = pageIndex+imageSrc.substring(imageSrc.lastIndexOf("."));
 //                new Thread(()-> {
                     log.info("download name:{}, src:{}",imageName, imageSrc);
-                    imageDownload.download(imageSrc, httpRequest.getReferer(), saveMangaPath, imageName);
+                    imageDownload.download(imageSrc, httpServerRequest.getReferer(), saveMangaPath, imageName);
 //                }).start();
                 pageIndex++;
             }

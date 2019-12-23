@@ -16,7 +16,7 @@ import org.jsoup.select.Elements;
  * @Author : natsuki_kining
  * @Date : 2019/12/16 21:59
  */
-@Component("position")
+@Component
 @Slf4j
 public class PositionAction implements IOperateAction {
 

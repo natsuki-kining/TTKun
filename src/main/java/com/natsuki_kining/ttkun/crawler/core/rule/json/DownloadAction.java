@@ -8,7 +8,7 @@ import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.StringUtil;
 import com.natsuki_kining.ttkun.crawler.core.download.AbstractDownload;
 import com.natsuki_kining.ttkun.crawler.model.enums.DownloadType;
-import com.natsuki_kining.ttkun.crawler.model.http.HttpRequest;
+import com.natsuki_kining.ttkun.crawler.model.http.HttpServerRequest;
 import com.natsuki_kining.ttkun.crawler.model.pojo.DownloadPOJO;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.DownloadRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
@@ -25,7 +25,7 @@ import java.util.Map;
  * @Author natsuki_kining
  * @Date 2019/12/17 16:31
  **/
-@Component("download")
+@Component
 @Slf4j
 public class DownloadAction implements IOperateAction {
 
@@ -33,7 +33,7 @@ public class DownloadAction implements IOperateAction {
     private Map<String, AbstractDownload> downloadMap;
 
     @Autowired
-    private HttpRequest httpRequest;
+    private HttpServerRequest httpServerRequest;
 
     @Value("save.path")
     private String savePath;
@@ -95,7 +95,7 @@ public class DownloadAction implements IOperateAction {
         download.setName(name);
 
         //设置referer
-        String referer = httpRequest.getReferer();
+        String referer = httpServerRequest.getReferer();
         if (StringUtils.isNotBlank(downloadRule.getReferer())){
             referer = downloadRule.getReferer();
         }

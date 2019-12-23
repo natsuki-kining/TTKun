@@ -1,0 +1,25 @@
+package com.natsuki_kining.ttkun.crawler.core.request.convert;
+
+import com.natsuki_kining.ttkun.context.annotation.Component;
+import com.natsuki_kining.ttkun.crawler.core.request.convert.IConvert;
+import com.natsuki_kining.ttkun.crawler.model.request.AbstractRequest;
+import lombok.extern.slf4j.Slf4j;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
+/**
+ * TODO
+ *
+ * @Author natsuki_kining
+ * @Date 2019/12/15 16:26
+ **/
+@Component
+@Slf4j
+public class HtmlConvert implements IConvert {
+
+    @Override
+    public Object convert(AbstractRequest request, Object response) {
+        Document document = Jsoup.parse(response.toString());
+        return document;
+    }
+}

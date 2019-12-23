@@ -2,6 +2,7 @@ package com.natsuki_kining.ttkun.crawler.model.http;
 
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.context.annotation.Value;
+import com.natsuki_kining.ttkun.crawler.model.request.HttpRequest;
 import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  **/
 @Component
 @Getter
-public class HttpRequest {
+public class HttpServerRequest {
 
     @Value("request.timeout")
     private Integer timeout;//请求超时时间,默认20秒
@@ -23,8 +24,8 @@ public class HttpRequest {
     @Value("request.wait.for.background.java.script")
     private Integer waitForBackgroundJavaScript;//等待异步JS执行时间,默认20秒
 
-    @Value("request.html.type")
-    private String htmlType;//获取html方式的类型，默认htmlUnit
+    @Value("request.type")
+    private String type;//发送请求的方式的类型，默认htmlUnit
 
     @Value("request.accept")
     private String accept;//客户端接受的响应类型
@@ -34,6 +35,10 @@ public class HttpRequest {
 
     @Value("request.content.type")
     private String contentType;//指示资源的MIME类型
+
+    public HttpRequest getHttpRequest(){
+        return new HttpRequest();
+    }
 
     private String url;//请求地址
     private Map<String, String> cookies;//cookie

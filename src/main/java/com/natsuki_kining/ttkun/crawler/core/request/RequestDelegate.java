@@ -1,13 +1,31 @@
 package com.natsuki_kining.ttkun.crawler.core.request;
 
+import com.natsuki_kining.ttkun.context.annotation.Autowired;
+import com.natsuki_kining.ttkun.context.annotation.Component;
+import com.natsuki_kining.ttkun.crawler.common.excption.RequestException;
+import com.natsuki_kining.ttkun.crawler.core.request.convert.ConvertDelegate;
+import com.natsuki_kining.ttkun.crawler.core.request.type.AbstractRequestType;
+import com.natsuki_kining.ttkun.crawler.core.request.type.RequestTypeDelegate;
+import com.natsuki_kining.ttkun.crawler.model.request.AbstractRequest;
+
 /**
  * TODO
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/19 0:25
  */
-public class RequestDelegate extends AbstractRequest {
+@Component
+public class RequestDelegate extends AbstractRequestType {
 
+    @Autowired
+    private RequestTypeDelegate requestTypeDelegate;
 
+    @Autowired
+    private ConvertDelegate convertDelegate;
 
+    @Override
+    public Object doRequest(AbstractRequest request) throws RequestException {
+        Object response = requestTypeDelegate.doRequest(request);
+        return convertDelegate.convert(request,response);
+    }
 }

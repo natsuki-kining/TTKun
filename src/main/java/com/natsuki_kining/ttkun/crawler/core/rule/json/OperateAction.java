@@ -14,7 +14,7 @@ import java.util.Map;
  * @Author natsuki_kining
  * @Date 2019/12/17 16:32
  **/
-@Component("operate")
+@Component
 @Slf4j
 public class OperateAction implements IOperateAction {
 
@@ -27,9 +27,9 @@ public class OperateAction implements IOperateAction {
     }
 
     private IOperateAction getAction(OperateRule operateRule){
-        IOperateAction action = operateActionMap.get(operateRule.getType());
+        IOperateAction action = operateActionMap.get(operateRule.getType()+"Action");
         if (action == null){
-            throw new RuleException("action 为空。");
+            throw new RuleException("找不到 "+operateRule.getType()+" action。");
         }
         return action;
     }

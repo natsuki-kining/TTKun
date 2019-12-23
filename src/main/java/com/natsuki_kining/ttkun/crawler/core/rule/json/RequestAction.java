@@ -3,15 +3,14 @@ package com.natsuki_kining.ttkun.crawler.core.rule.json;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
-import com.natsuki_kining.ttkun.crawler.core.request.html.HtmlDelegate;
-import com.natsuki_kining.ttkun.crawler.model.http.HttpRequest;
+import com.natsuki_kining.ttkun.crawler.core.request.RequestDelegate;
+import com.natsuki_kining.ttkun.crawler.model.http.HttpServerRequest;
 import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
+import com.natsuki_kining.ttkun.crawler.model.request.HttpRequest;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 /**
@@ -20,28 +19,28 @@ import org.jsoup.nodes.Element;
  * @Author natsuki_kining
  * @Date 2019/12/17 16:31
  **/
-@Component("request")
+@Component
 @Slf4j
 public class RequestAction implements IOperateAction {
 
     @Autowired
-    private HtmlDelegate htmlDelegate;
+    private RequestDelegate requestDelegate;
     @Autowired
-    private HttpRequest httpRequest;
+    private HttpServerRequest httpServerRequest;
 
     @Override
-    public Document action(OperateRule operateRule) {
+    public Object action(OperateRule operateRule) {
         if(operateRule.getRequest() == null){
             throw new RuleException("requestRule 为空。");
         }
         RequestPOJO requestPOJO = init(operateRule);
 
+        HttpRequest httpRequest = httpServerRequest.getHttpRequest();
         httpRequest.setUrl(requestPOJO.getUrl());
         if (StringUtils.isNotBlank(requestPOJO.getReferer())){
             httpRequest.setReferer(requestPOJO.getReferer());
         }
-        String html = htmlDelegate.getHtml(httpRequest);
-        return Jsoup.parse(html);
+        return requestDelegate.doRequest(httpRequest);
     }
 
     private RequestPOJO init(OperateRule operateRule) {
@@ -86,7 +85,7 @@ public class RequestAction implements IOperateAction {
         String value2 = "";
         if ("$".equals(flag)){
             if ("referer".equals(key)){
-                value2 = httpRequest.getReferer();
+//                value2 = httpRequest.getReferer();
             }
         }else if("%attr".equals(flag)){
             value2 = element.attr(key);
