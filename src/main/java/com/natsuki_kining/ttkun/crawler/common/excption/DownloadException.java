@@ -1,7 +1,7 @@
 package com.natsuki_kining.ttkun.crawler.common.excption;
 
 /**
- * 解析异常
+ * 下载异常
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 16:30

@@ -4,7 +4,7 @@ import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.config.PropertiesConfig;
 import com.natsuki_kining.ttkun.crawler.common.excption.AnalysisException;
-import com.natsuki_kining.ttkun.crawler.model.request.AbstractRequest;
+import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;

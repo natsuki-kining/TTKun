@@ -3,10 +3,9 @@ package com.natsuki_kining.ttkun.crawler.core.rule.json;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
+import com.natsuki_kining.ttkun.crawler.core.request.HttpRequest;
 import com.natsuki_kining.ttkun.crawler.core.request.RequestDelegate;
-import com.natsuki_kining.ttkun.crawler.model.http.HttpServerRequest;
 import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
-import com.natsuki_kining.ttkun.crawler.model.request.HttpRequest;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,7 @@ public class RequestAction implements IOperateAction {
     @Autowired
     private RequestDelegate requestDelegate;
     @Autowired
-    private HttpServerRequest httpServerRequest;
+    private HttpRequest httpRequest;
 
     @Override
     public Object action(OperateRule operateRule) {
@@ -34,13 +33,7 @@ public class RequestAction implements IOperateAction {
             throw new RuleException("requestRule 为空。");
         }
         RequestPOJO requestPOJO = init(operateRule);
-
-        HttpRequest httpRequest = httpServerRequest.getHttpRequest();
-        httpRequest.setUrl(requestPOJO.getUrl());
-        if (StringUtils.isNotBlank(requestPOJO.getReferer())){
-            httpRequest.setReferer(requestPOJO.getReferer());
-        }
-        return requestDelegate.doRequest(httpRequest);
+        return requestDelegate.doHttpRequest(requestPOJO.getUrl());
     }
 
     private RequestPOJO init(OperateRule operateRule) {

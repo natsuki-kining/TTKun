@@ -4,7 +4,7 @@ import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.excption.RequestException;
 import com.natsuki_kining.ttkun.crawler.core.request.type.AbstractRequestType;
 import com.natsuki_kining.ttkun.crawler.model.enums.RequestMethod;
-import com.natsuki_kining.ttkun.crawler.model.request.AbstractRequest;
+import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
 import org.jsoup.Connection;
 
 import java.io.IOException;

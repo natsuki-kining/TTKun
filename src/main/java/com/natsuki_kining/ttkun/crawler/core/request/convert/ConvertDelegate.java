@@ -3,7 +3,7 @@ package com.natsuki_kining.ttkun.crawler.core.request.convert;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.excption.RequestException;
-import com.natsuki_kining.ttkun.crawler.model.request.AbstractRequest;
+import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
 
 import java.util.Map;
 

@@ -7,8 +7,8 @@ import com.natsuki_kining.ttkun.context.variables.SystemVariables;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.StringUtil;
 import com.natsuki_kining.ttkun.crawler.core.download.AbstractDownload;
+import com.natsuki_kining.ttkun.crawler.core.request.HttpRequest;
 import com.natsuki_kining.ttkun.crawler.model.enums.DownloadType;
-import com.natsuki_kining.ttkun.crawler.model.http.HttpServerRequest;
 import com.natsuki_kining.ttkun.crawler.model.pojo.DownloadPOJO;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.DownloadRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
@@ -33,7 +33,7 @@ public class DownloadAction implements IOperateAction {
     private Map<String, AbstractDownload> downloadMap;
 
     @Autowired
-    private HttpServerRequest httpServerRequest;
+    private HttpRequest httpRequest;
 
     @Value("save.path")
     private String savePath;
@@ -95,7 +95,7 @@ public class DownloadAction implements IOperateAction {
         download.setName(name);
 
         //设置referer
-        String referer = httpServerRequest.getReferer();
+        String referer = httpRequest.getReferer();
         if (StringUtils.isNotBlank(downloadRule.getReferer())){
             referer = downloadRule.getReferer();
         }

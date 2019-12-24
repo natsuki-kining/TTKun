@@ -1,6 +1,7 @@
 package com.natsuki_kining.ttkun.crawler.common.excption;
 
 /**
+ * IO操作异常
  * 将io受检异常改为运行时异常、因为lamda表达式不能抛出异常
  *
  * @Author natsuki_kining

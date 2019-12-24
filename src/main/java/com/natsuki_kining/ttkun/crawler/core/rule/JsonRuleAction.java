@@ -7,6 +7,7 @@ import com.natsuki_kining.ttkun.context.annotation.Run;
 import com.natsuki_kining.ttkun.context.annotation.Value;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.UrlUtil;
+import com.natsuki_kining.ttkun.crawler.core.request.HttpRequest;
 import com.natsuki_kining.ttkun.crawler.core.rule.json.OperateAction;
 import com.natsuki_kining.ttkun.crawler.model.rule.JsonRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
@@ -43,33 +44,6 @@ public class JsonRuleAction extends AbstractRuleAction {
     private String defaultRuleFilePath = "rule/";
 
     @Override
-    public JsonRule getRule() {
-        String website = UrlUtil.getWebsite(url);
-        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ruleFilePath + website + ".json");
-        try {
-            String jsonString = IOUtils.toString(resourceAsStream, "UTF-8");
-            OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
-            return operateRule;
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new RuleException(e.getMessage(), e);
-        }
-    }
-
-    @Override
-    public JsonRule getRule(String ruleFile) {
-        File file = new File(ruleFile);
-        try {
-            String jsonString = FileUtils.readFileToString(file, "UTF-8");
-            OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
-            return operateRule;
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new RuleException(e.getMessage(), e);
-        }
-    }
-
-    @Run
     public void action() {
         OperateRule operateRule = (OperateRule) getRule();
         action(operateRule);
@@ -100,6 +74,33 @@ public class JsonRuleAction extends AbstractRuleAction {
         operateRule.setElement(element);
         operateRule.setLastStep(p);
         action(operateRule);
+    }
+
+    @Override
+    public JsonRule getRule() {
+        String website = UrlUtil.getWebsite(url);
+        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ruleFilePath + website + ".json");
+        try {
+            String jsonString = IOUtils.toString(resourceAsStream, "UTF-8");
+            OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
+            return operateRule;
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            throw new RuleException(e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public JsonRule getRule(String ruleFile) {
+        File file = new File(ruleFile);
+        try {
+            String jsonString = FileUtils.readFileToString(file, "UTF-8");
+            OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
+            return operateRule;
+        } catch (IOException e) {
+            log.error(e.getMessage(), e);
+            throw new RuleException(e.getMessage(), e);
+        }
     }
 
 }

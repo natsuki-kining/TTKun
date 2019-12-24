@@ -6,7 +6,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.core.request.type.AbstractRequestType;
-import com.natsuki_kining.ttkun.crawler.model.request.AbstractRequest;
+import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
 import lombok.extern.slf4j.Slf4j;
 
 /**

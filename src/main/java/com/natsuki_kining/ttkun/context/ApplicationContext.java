@@ -294,8 +294,16 @@ public class ApplicationContext {
      */
     private void initBeanFieldsByValue() {
         hasComponentAnnotationClasses.forEach(clazz->{
-            Field[] fields = clazz.getDeclaredFields();
-            Arrays.stream(fields)
+
+            //获取父类字段
+            List<Field> fieldList = new ArrayList<>() ;
+            Class tempClass = clazz;
+            while (tempClass != null) {
+                fieldList.addAll(Arrays.asList(tempClass .getDeclaredFields()));
+                tempClass = tempClass.getSuperclass();
+            }
+
+            fieldList.stream()
                     .filter(field->field.isAnnotationPresent(Value.class))
                     .forEach(field->{
                         field.setAccessible(true);

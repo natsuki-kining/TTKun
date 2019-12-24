@@ -1,7 +1,7 @@
 package com.natsuki_kining.ttkun.crawler.core.request.type;
 
 import com.natsuki_kining.ttkun.crawler.common.excption.RequestException;
-import com.natsuki_kining.ttkun.crawler.model.request.AbstractRequest;
+import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
 
 /**
  * TODO
@@ -11,6 +11,6 @@ import com.natsuki_kining.ttkun.crawler.model.request.AbstractRequest;
  **/
 public abstract class AbstractRequestType {
 
-    public abstract Object doRequest(AbstractRequest request) throws RequestException;
+    protected abstract Object doRequest(AbstractRequest request) throws RequestException;
 
 }
