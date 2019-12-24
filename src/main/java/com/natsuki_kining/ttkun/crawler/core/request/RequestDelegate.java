@@ -6,6 +6,7 @@ import com.natsuki_kining.ttkun.crawler.common.excption.RequestException;
 import com.natsuki_kining.ttkun.crawler.core.request.convert.ConvertDelegate;
 import com.natsuki_kining.ttkun.crawler.core.request.type.AbstractRequestType;
 import com.natsuki_kining.ttkun.crawler.core.request.type.RequestTypeDelegate;
+import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
 
 /**
  * TODO
@@ -27,13 +28,15 @@ public class RequestDelegate extends AbstractRequestType {
 
     @Override
     protected Object doRequest(AbstractRequest request) throws RequestException {
-        Object response = requestTypeDelegate.doRequest(request);
-        return convertDelegate.convert(request,response);
+        return requestTypeDelegate.doRequest(request);
     }
 
-    public Object doHttpRequest(String url) throws RequestException {
+    public Object doHttpRequest(RequestPOJO requestPOJO) throws RequestException {
         HttpRequest request = (HttpRequest)httpRequest.clone();
-        request.setUrl(url);
-        return doRequest(request);
+        request.setUrl(requestPOJO.getUrl());
+        request.setReferer(requestPOJO.getReferer());
+        Object response = doRequest(request);
+        Object convert = convertDelegate.convert(requestPOJO,response);
+        return convert;
     }
 }

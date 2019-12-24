@@ -13,5 +13,5 @@ public class DownloadRule extends AbstractRequestRule {
 
     private String name;
     private String path;
-    private String downloadType;
+    private String downloadType = "imageDownload";
 }

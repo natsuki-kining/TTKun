@@ -25,6 +25,7 @@ public class RequestTypeDelegate extends AbstractRequestType {
     @Autowired
     private Map<String, AbstractRequestType> requestTypeMap;
 
+    @Override
     public Object doRequest(AbstractRequest request) {
         log.info("使用：{} 发送方式。", config.getRequestType());
         AbstractRequestType requestType = requestTypeMap.get(config.getRequestType()+"Type");
@@ -33,4 +34,6 @@ public class RequestTypeDelegate extends AbstractRequestType {
         }
         return requestType.doRequest(request);
     }
+
+
 }

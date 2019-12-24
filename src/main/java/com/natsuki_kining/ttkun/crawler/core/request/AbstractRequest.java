@@ -44,8 +44,6 @@ public abstract class AbstractRequest {
 
     private RequestMethod method;//请求类型、post、get、head……
 
-    private String convertType;//转换类型。html转成document。json转成jsonObject
-
     @Value("request.type")
     private String type;//发送请求的方式的类型，默认htmlUnit
 
@@ -55,7 +53,6 @@ public abstract class AbstractRequest {
 
     public void setUrl(String url) {
         this.url = url;
-        this.referer = this.url.substring(0,this.url.indexOf("/",8));
     }
 
     public void appendUrl(String url){

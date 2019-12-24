@@ -5,8 +5,8 @@ import com.gargoylesoftware.htmlunit.NicelyResynchronizingAjaxController;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.natsuki_kining.ttkun.context.annotation.Component;
-import com.natsuki_kining.ttkun.crawler.core.request.type.AbstractRequestType;
 import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
+import com.natsuki_kining.ttkun.crawler.core.request.type.AbstractRequestType;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class HtmlUnitType extends AbstractRequestType {
 
     @Override
-    public Object doRequest(AbstractRequest request) {
+    protected Object doRequest(AbstractRequest request) {
         String result = "";
 
         final WebClient webClient = new WebClient(BrowserVersion.CHROME);

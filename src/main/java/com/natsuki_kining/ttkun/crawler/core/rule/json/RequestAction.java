@@ -33,7 +33,7 @@ public class RequestAction implements IOperateAction {
             throw new RuleException("requestRule 为空。");
         }
         RequestPOJO requestPOJO = init(operateRule);
-        return requestDelegate.doHttpRequest(requestPOJO.getUrl());
+        return requestDelegate.doHttpRequest(requestPOJO);
     }
 
     private RequestPOJO init(OperateRule operateRule) {
@@ -41,11 +41,12 @@ public class RequestAction implements IOperateAction {
         RequestRule requestRule = operateRule.getRequest();
         RequestPOJO requestPOJO = new RequestPOJO();
         requestPOJO.setReferer(requestRule.getReferer());
+        requestPOJO.setConvertType(requestRule.getConvertType());
 
         String url = requestRule.getUrl();
         if (StringUtils.isNotBlank(url) && !url.startsWith("http")){
             if (url.contains("$") || url.contains("%")){
-                url = getUrlValue(url,element);
+                url = getUrlValue(operateRule,url,element);
             }else{
                 url = element.attr(requestRule.getUrl());
             }
@@ -59,7 +60,7 @@ public class RequestAction implements IOperateAction {
         return requestPOJO;
     }
 
-    private String getUrlValue(String url, Element element) {
+    private String getUrlValue(OperateRule operateRule,String url, Element element) {
         String urlValue = "";
         String flag = "";
         if (url.contains("$")){
@@ -78,7 +79,7 @@ public class RequestAction implements IOperateAction {
         String value2 = "";
         if ("$".equals(flag)){
             if ("referer".equals(key)){
-//                value2 = httpRequest.getReferer();
+                value2 = getRequestRuleReferer(operateRule);
             }
         }else if("%attr".equals(flag)){
             value2 = element.attr(key);
@@ -86,9 +87,16 @@ public class RequestAction implements IOperateAction {
         urlValue = value1+value2+value3;
 
         if (urlValue.contains("$") || urlValue.contains("%")){
-            urlValue = getUrlValue(urlValue,element);
+            urlValue = getUrlValue(operateRule,urlValue,element);
         }
         return urlValue;
+    }
+
+    public String getRequestRuleReferer(OperateRule operateRule){
+        if (operateRule.getRequest() != null && StringUtils.isNotBlank(operateRule.getRequest().getReferer())){
+            return operateRule.getRequest().getReferer();
+        }
+        return getRequestRuleReferer(operateRule.getLastStep());
     }
 
 }

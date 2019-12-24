@@ -19,13 +19,4 @@ public class PositionRule extends JsonRule {
     private String value;
     private Integer index;
 
-
-    /*private List<Attribute> attributes;
-
-    private List<Tag> tags;
-
-    public boolean fieldIsNull(){
-        return (attributes == null && attributes.size() == 0
-        && tags == null && tags.size() == 0);
-    }*/
 }

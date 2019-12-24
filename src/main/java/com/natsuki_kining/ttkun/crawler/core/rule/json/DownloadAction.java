@@ -18,6 +18,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * TODO
@@ -40,6 +42,8 @@ public class DownloadAction implements IOperateAction {
     @Value("download.use.multithreading.enable")
     private Boolean multithreadingEnable;
 
+    ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
+
     @Override
     public Object action(OperateRule operateRule) {
         DownloadRule downloadRule = operateRule.getDownload();
@@ -49,9 +53,9 @@ public class DownloadAction implements IOperateAction {
         DownloadPOJO downloadPOJO = init(operateRule);
         AbstractDownload abstractDownload = getDownloadType(downloadRule);
         if (multithreadingEnable){
-            new Thread(()->{
+            cachedThreadPool.execute(()->{
                 abstractDownload.download(downloadPOJO.getUrl(), downloadPOJO.getReferer(), downloadPOJO.getPath(), downloadPOJO.getName());
-            }).start();
+            });
         }else {
             abstractDownload.download(downloadPOJO.getUrl(), downloadPOJO.getReferer(), downloadPOJO.getPath(), downloadPOJO.getName());
         }

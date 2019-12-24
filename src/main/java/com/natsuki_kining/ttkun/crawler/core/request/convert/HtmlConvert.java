@@ -1,7 +1,6 @@
 package com.natsuki_kining.ttkun.crawler.core.request.convert;
 
 import com.natsuki_kining.ttkun.context.annotation.Component;
-import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,7 +16,7 @@ import org.jsoup.nodes.Document;
 public class HtmlConvert implements IConvert {
 
     @Override
-    public Object convert(AbstractRequest request, Object response) {
+    public Object convert(Object response) {
         Document document = Jsoup.parse(response.toString());
         return document;
     }

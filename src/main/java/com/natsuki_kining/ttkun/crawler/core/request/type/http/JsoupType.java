@@ -19,7 +19,7 @@ import java.io.IOException;
 public class JsoupType extends AbstractRequestType {
 
     @Override
-    public Object doRequest(AbstractRequest request) {
+    protected Object doRequest(AbstractRequest request) {
         Connection.Response response = null;
         try {
             Connection connection = org.jsoup.Jsoup.connect(request.getUrl())

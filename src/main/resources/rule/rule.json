@@ -17,7 +17,7 @@
     },
     "request": {
       "url": "src",//元素的attr键
-      "type": "html",//请求返回的类型
+      "convertType":"html",//转换类型。html转成document。json转成jsonObject。默认html
       "referer": null,//null表示使用默认值,
       "urlName": null //链接的名字，元素的attribute key
     },

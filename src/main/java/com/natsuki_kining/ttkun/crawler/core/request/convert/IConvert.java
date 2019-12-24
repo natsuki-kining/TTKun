@@ -1,7 +1,5 @@
 package com.natsuki_kining.ttkun.crawler.core.request.convert;
 
-import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
-
 /**
  * TODO
  *
@@ -10,5 +8,5 @@ import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
  **/
 public interface IConvert {
 
-    Object convert(AbstractRequest request, Object response);
+    Object convert(Object response);
 }
