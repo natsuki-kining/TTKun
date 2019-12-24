@@ -37,10 +37,16 @@ public class RequestAction implements IOperateAction {
     }
 
     private RequestPOJO init(OperateRule operateRule) {
+        RequestPOJO requestPOJO = new RequestPOJO();
+
         Element element = operateRule.getElement();
         RequestRule requestRule = operateRule.getRequest();
-        RequestPOJO requestPOJO = new RequestPOJO();
+
+        if (StringUtils.isBlank(requestRule.getReferer())){
+            requestRule.setReferer(getRequestRuleReferer(operateRule));
+        }
         requestPOJO.setReferer(requestRule.getReferer());
+
         requestPOJO.setConvertType(requestRule.getConvertType());
 
         String url = requestRule.getUrl();

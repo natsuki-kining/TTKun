@@ -34,9 +34,6 @@ public class DownloadAction implements IOperateAction {
     @Autowired
     private Map<String, AbstractDownload> downloadMap;
 
-    @Autowired
-    private HttpRequest httpRequest;
-
     @Value("save.path")
     private String savePath;
     @Value("download.use.multithreading.enable")
@@ -99,16 +96,17 @@ public class DownloadAction implements IOperateAction {
         download.setName(name);
 
         //设置referer
-        String referer = httpRequest.getReferer();
-        if (StringUtils.isNotBlank(downloadRule.getReferer())){
-            referer = downloadRule.getReferer();
+        String referer = "";
+        OperateRule lastRequest = getLastRequest(operateRule);
+        if (lastRequest != null){
+            referer = lastRequest.getRequest().getReferer();
         }
         download.setReferer(referer);
 
         //设置path
         String path = "";
         String lastUrlName = "";
-        OperateRule or = getLastRequest(operateRule);
+        OperateRule or = lastRequest;
         if (or != null){
             RequestRule rr = or.getRequest();
             Element oe = or.getElement();
