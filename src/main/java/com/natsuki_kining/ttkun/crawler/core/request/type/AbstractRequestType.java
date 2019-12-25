@@ -4,7 +4,7 @@ import com.natsuki_kining.ttkun.crawler.common.excption.RequestException;
 import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
 
 /**
- * TODO
+ * 请求类型抽象类
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 9:55

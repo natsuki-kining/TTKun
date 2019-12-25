@@ -5,7 +5,7 @@ import com.natsuki_kining.ttkun.context.annotation.Value;
 import lombok.Getter;
 
 /**
- * TODO
+ * PropertiesConfig
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 10:56

@@ -14,7 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 
 /**
- * TODO
+ * 处理请求操作
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:31
@@ -56,8 +56,6 @@ public class RequestAction implements IOperateAction {
         if (StringUtils.isNotBlank(requestRule.getReferer())){
             requestPOJO.setReferer(requestRule.getReferer());
         }
-
-        requestPOJO.setReferer(requestRule.getReferer());
 
         if (StringUtils.isNotBlank(requestRule.getUrlName())){
             String urlName = element.attr(requestRule.getUrlName());

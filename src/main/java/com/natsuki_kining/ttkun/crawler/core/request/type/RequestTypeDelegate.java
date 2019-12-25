@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.util.Map;
 
 /**
- * TODO
+ * 请求类型操作委派
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 9:53

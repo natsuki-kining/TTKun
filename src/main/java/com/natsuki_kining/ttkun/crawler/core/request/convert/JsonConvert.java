@@ -6,7 +6,7 @@ import com.natsuki_kining.ttkun.context.annotation.Component;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * TODO
+ * 转换成json
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 16:26

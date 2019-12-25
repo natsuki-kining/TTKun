@@ -8,7 +8,7 @@ import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
 import java.util.Map;
 
 /**
- * TODO
+ * 转换委派
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 14:47

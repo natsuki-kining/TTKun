@@ -5,7 +5,7 @@ import com.natsuki_kining.ttkun.crawler.common.excption.CloneException;
 import lombok.Data;
 
 /**
- * TODO
+ * HttpRequest
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 9:58

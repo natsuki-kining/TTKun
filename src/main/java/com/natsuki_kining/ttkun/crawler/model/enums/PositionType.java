@@ -1,7 +1,7 @@
 package com.natsuki_kining.ttkun.crawler.model.enums;
 
 /**
- * TODO
+ * PositionType
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:08

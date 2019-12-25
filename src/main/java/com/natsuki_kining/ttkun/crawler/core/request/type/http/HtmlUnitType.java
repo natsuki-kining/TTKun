@@ -10,7 +10,7 @@ import com.natsuki_kining.ttkun.crawler.core.request.type.AbstractRequestType;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * TODO
+ * 使用HtmlUnit发送请求
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 16:25

@@ -4,7 +4,7 @@ import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 
 /**
- * TODO
+ * RuleUtil
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/26 0:49

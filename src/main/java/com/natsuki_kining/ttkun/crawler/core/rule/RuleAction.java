@@ -9,7 +9,7 @@ import com.natsuki_kining.ttkun.crawler.model.rule.Rule;
 import java.util.Map;
 
 /**
- * TODO
+ * 处理规则
  *
  * @Author natsuki_kining
  * @Date 2019/12/24 17:24

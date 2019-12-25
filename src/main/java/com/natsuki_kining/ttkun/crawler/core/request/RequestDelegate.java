@@ -9,7 +9,7 @@ import com.natsuki_kining.ttkun.crawler.core.request.type.RequestTypeDelegate;
 import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
 
 /**
- * TODO
+ * 请求委派
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/19 0:25
