@@ -1,8 +1,9 @@
 package com.natsuki_kining.ttkun.crawler.core.rule.json;
 
+import com.natsuki_kining.ttkun.context.ApplicationContext;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
-import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
+import com.natsuki_kining.ttkun.crawler.common.utils.RuleUtil;
 import com.natsuki_kining.ttkun.crawler.core.request.HttpRequest;
 import com.natsuki_kining.ttkun.crawler.core.request.RequestDelegate;
 import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
@@ -29,29 +30,22 @@ public class RequestAction implements IOperateAction {
 
     @Override
     public Object action(OperateRule operateRule) {
-        if(operateRule.getRequest() == null){
-            throw new RuleException("requestRule 为空。");
-        }
         RequestPOJO requestPOJO = init(operateRule);
         return requestDelegate.doHttpRequest(requestPOJO);
     }
 
-    private RequestPOJO init(OperateRule operateRule) {
+    @Override
+    public RequestPOJO init(OperateRule operateRule) {
         RequestPOJO requestPOJO = new RequestPOJO();
 
         Element element = operateRule.getElement();
         RequestRule requestRule = operateRule.getRequest();
 
-        if (StringUtils.isBlank(requestRule.getReferer())){
-            requestRule.setReferer(getRequestRuleReferer(operateRule));
-        }
-        requestPOJO.setReferer(requestRule.getReferer());
-
         requestPOJO.setConvertType(requestRule.getConvertType());
 
         String url = requestRule.getUrl();
         if (StringUtils.isNotBlank(url) && !url.startsWith("http")){
-            if (url.contains("$") || url.contains("%")){
+            if (url.contains("$") || url.contains("#") || url.contains("%")){
                 url = getUrlValue(operateRule,url,element);
             }else{
                 url = element.attr(requestRule.getUrl());
@@ -59,10 +53,17 @@ public class RequestAction implements IOperateAction {
         }
         requestPOJO.setUrl(url);
 
+        if (StringUtils.isNotBlank(requestRule.getReferer())){
+            requestPOJO.setReferer(requestRule.getReferer());
+        }
+
+        requestPOJO.setReferer(requestRule.getReferer());
+
         if (StringUtils.isNotBlank(requestRule.getUrlName())){
             String urlName = element.attr(requestRule.getUrlName());
             requestPOJO.setUrlName(urlName);
         }
+
         return requestPOJO;
     }
 
@@ -71,6 +72,8 @@ public class RequestAction implements IOperateAction {
         String flag = "";
         if (url.contains("$")){
             flag = "$";
+        }else if(url.contains("#")){
+            flag = "#";
         }else if(url.contains("%attr")){
             flag = "%attr";
         }else {
@@ -84,8 +87,10 @@ public class RequestAction implements IOperateAction {
         String value3 = url.substring(index2+1);
         String value2 = "";
         if ("$".equals(flag)){
+            value2 = ApplicationContext.getInstance().getReader().getConfig().getProperty(key);
+        }if ("#".equals(flag)){
             if ("referer".equals(key)){
-                value2 = getRequestRuleReferer(operateRule);
+                value2 = RuleUtil.getLastRequestReferer(operateRule);
             }
         }else if("%attr".equals(flag)){
             value2 = element.attr(key);
@@ -96,13 +101,6 @@ public class RequestAction implements IOperateAction {
             urlValue = getUrlValue(operateRule,urlValue,element);
         }
         return urlValue;
-    }
-
-    public String getRequestRuleReferer(OperateRule operateRule){
-        if (operateRule.getRequest() != null && StringUtils.isNotBlank(operateRule.getRequest().getReferer())){
-            return operateRule.getRequest().getReferer();
-        }
-        return getRequestRuleReferer(operateRule.getLastStep());
     }
 
 }

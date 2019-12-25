@@ -1,7 +1,7 @@
 {
   "type": "request",
   "request": {
-    "url": "https://lhscan.net/manga-my-house-is-a-magic-power-spot-just-by-living-there-i-become-the-strongest-in-the-world-raw.html"
+    "url": "${crawler.url}"
   },
   "nextStep": {
     "type": "position",
@@ -21,7 +21,7 @@
       "nextStep": {
         "type": "request",
         "request": {
-          "url": "${referer}/%attr{href}",
+          "url": "#{referer}/%attr{href}",
           "urlName": "title"
         },
         "nextStep": {

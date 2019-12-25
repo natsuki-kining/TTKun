@@ -22,8 +22,8 @@ public class ApplicationBoot {
             //run
             ApplicationContext.getInstance().run();
         } catch (Exception e) {
-            e.printStackTrace();
             log.error(e.getMessage(),e);
+            System.exit(1);
         }
     }
 

@@ -5,9 +5,9 @@ import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.context.annotation.Value;
 import com.natsuki_kining.ttkun.context.variables.SystemVariables;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
+import com.natsuki_kining.ttkun.crawler.common.utils.RuleUtil;
 import com.natsuki_kining.ttkun.crawler.common.utils.StringUtil;
 import com.natsuki_kining.ttkun.crawler.core.download.AbstractDownload;
-import com.natsuki_kining.ttkun.crawler.core.request.HttpRequest;
 import com.natsuki_kining.ttkun.crawler.model.enums.DownloadType;
 import com.natsuki_kining.ttkun.crawler.model.pojo.DownloadPOJO;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.DownloadRule;
@@ -44,9 +44,6 @@ public class DownloadAction implements IOperateAction {
     @Override
     public Object action(OperateRule operateRule) {
         DownloadRule downloadRule = operateRule.getDownload();
-        if (downloadRule == null){
-            throw new RuleException("downloadRule 为空。");
-        }
         DownloadPOJO downloadPOJO = init(operateRule);
         AbstractDownload abstractDownload = getDownloadType(downloadRule);
         if (multithreadingEnable){
@@ -71,7 +68,8 @@ public class DownloadAction implements IOperateAction {
         return abstractDownload;
     }
 
-    private DownloadPOJO init(OperateRule operateRule){
+    @Override
+    public DownloadPOJO init(OperateRule operateRule){
         Element element = operateRule.getElement();
         DownloadRule downloadRule = operateRule.getDownload();
 
@@ -88,7 +86,7 @@ public class DownloadAction implements IOperateAction {
         //设置name
         String name = "";
         if (downloadRule.getName() == null){
-            name = operateRule.getListIndex()+url.substring(url.lastIndexOf("."));
+            name = (operateRule.getListIndex()+1)+url.substring(url.lastIndexOf("."));
         }else{
             name = element.attr(downloadRule.getName());
         }
@@ -96,17 +94,14 @@ public class DownloadAction implements IOperateAction {
         download.setName(name);
 
         //设置referer
-        String referer = "";
-        OperateRule lastRequest = getLastRequest(operateRule);
-        if (lastRequest != null){
-            referer = lastRequest.getRequest().getReferer();
+        if (StringUtils.isBlank(download.getReferer())){
+            download.setReferer(RuleUtil.getLastRequestReferer(operateRule));
         }
-        download.setReferer(referer);
 
         //设置path
         String path = "";
         String lastUrlName = "";
-        OperateRule or = lastRequest;
+        OperateRule or = getLastRequest(operateRule);
         if (or != null){
             RequestRule rr = or.getRequest();
             Element oe = or.getElement();

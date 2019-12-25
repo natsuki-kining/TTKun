@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class JsonRuleAction extends AbstractRuleAction {
 
-    @Value("manga.url.world-end-crusaders")
+    @Value("crawler.url")
     private String url;
 
     @Value
@@ -60,7 +60,7 @@ public class JsonRuleAction extends AbstractRuleAction {
                         .forEach(index -> {
                             Element element = elements.get(index);
                             OperateRule operateRuleClone = (OperateRule) operateRule.clone();
-                            operateRuleClone.setListIndex(index + 1);
+                            operateRuleClone.setListIndex(index);
                             action(operateRuleClone, p, element);
                         });
             } else if (object instanceof Element) {

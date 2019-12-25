@@ -11,4 +11,5 @@ import lombok.Data;
 @Data
 public abstract class Rule {
 
+    private Object data;
 }

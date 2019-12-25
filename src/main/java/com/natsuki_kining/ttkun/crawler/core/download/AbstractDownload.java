@@ -1,7 +1,9 @@
 package com.natsuki_kining.ttkun.crawler.core.download;
 
+import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.crawler.common.excption.DownloadException;
 import com.natsuki_kining.ttkun.crawler.common.utils.FileUtil;
+import com.natsuki_kining.ttkun.crawler.core.request.HttpRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpResponse;
@@ -23,11 +25,14 @@ import java.io.OutputStream;
 @Slf4j
 public abstract class AbstractDownload {
 
+    @Autowired
+    private HttpRequest httpRequest;
+
     public void download(String url, String referer, String savePath, String fileName) {
         try {
             log.info("开始下载文件：{}", url);
             HttpGet httpGet = new HttpGet(url);
-            httpGet.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3325.181 Safari/537.36");
+            httpGet.setHeader("User-Agent", httpRequest.getUserAgent());
             httpGet.setHeader("Upgrade-Insecure-Requests", "1");
             httpGet.setHeader(HttpHeaders.REFERER, referer);
             CloseableHttpClient httpClient = HttpClients.createDefault();

@@ -11,4 +11,6 @@ import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 public interface IOperateAction {
 
     Object action(OperateRule operateRule);
+
+    Object init(OperateRule operateRule);
 }

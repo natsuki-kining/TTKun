@@ -59,7 +59,7 @@ public class ApplicationContext {
      * @param applicationClass
      * @param args
      */
-    public void init(Class<?> applicationClass, String[] args){
+    public void init(Class<?> applicationClass, String[] args) throws Exception {
         log.info("开始初始化容器……");
         loadApplicationFiles();
         initContext(applicationClass,args);
@@ -104,19 +104,6 @@ public class ApplicationContext {
             }
         }
         return null;
-    }
-
-    /**
-     * 重新加载配置文件
-     * @param propertiesFiles
-     */
-    public void reloadProperties(String[] propertiesFiles) {
-        try {
-            reader.load(propertiesFiles);
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
-        }
-        initBeanFieldsByValue();
     }
 
     private void loadApplicationFiles(){
@@ -164,7 +151,7 @@ public class ApplicationContext {
     /**
      * 初始化配置文件
      */
-    private void initProperties() {
+    private void initProperties() throws Exception {
         //配置文件
         if (ArrayUtils.isNotEmpty(args)){
             for (String arg : args) {
@@ -174,15 +161,7 @@ public class ApplicationContext {
                 }
             }
         }
-        try {
-            reader = new BeanDefinitionReader(properties);
-            String[] dataProperties = reader.getConfig().get("data.properties").toString().split(",");
-            reader.load(true,dataProperties);
-        } catch (Exception e) {
-            log.error(e.getMessage(),e);
-            System.exit(1);
-        }
-
+        reader = new BeanDefinitionReader(properties);
         //读取arg的参数，设置到properties里面
         for (String arg : args) {
             String[] split = arg.replace(ProjectVariables.Arguments.PARAM_FLAG, "").split("=");
@@ -278,8 +257,8 @@ public class ApplicationContext {
      */
     private void initBeanFieldsByAutowired() {
         hasComponentAnnotationClasses.forEach(clazz->{
-            Field[] fields = clazz.getDeclaredFields();
-            Arrays.stream(fields)
+            List<Field> fields = getDeclaredFields(clazz);
+            fields.stream()
                     .filter(field->field.isAnnotationPresent(Autowired.class))
                     .forEach(field->{
                         log.info("DI Autowired自动往{}依赖注入：{}",clazz,field.getName());
@@ -290,18 +269,27 @@ public class ApplicationContext {
     }
 
     /**
+     * 获取父类字段
+     * @param clazz
+     * @return
+     */
+    private List<Field> getDeclaredFields(Class clazz){
+        Class tempClass = clazz;
+        List<Field> fieldList = new ArrayList<>() ;
+        while (tempClass != null) {
+            fieldList.addAll(Arrays.asList(tempClass .getDeclaredFields()));
+            tempClass = tempClass.getSuperclass();
+        }
+        return fieldList;
+    }
+
+    /**
      * 扫描，给标有Value注解的属性注入值
      */
     private void initBeanFieldsByValue() {
         hasComponentAnnotationClasses.forEach(clazz->{
 
-            //获取父类字段
-            List<Field> fieldList = new ArrayList<>() ;
-            Class tempClass = clazz;
-            while (tempClass != null) {
-                fieldList.addAll(Arrays.asList(tempClass .getDeclaredFields()));
-                tempClass = tempClass.getSuperclass();
-            }
+            List<Field> fieldList = getDeclaredFields(clazz);
 
             fieldList.stream()
                     .filter(field->field.isAnnotationPresent(Value.class))
@@ -546,4 +534,7 @@ public class ApplicationContext {
         return String.valueOf(chars);
     }
 
+    public BeanDefinitionReader getReader() {
+        return reader;
+    }
 }

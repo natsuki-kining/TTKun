@@ -45,7 +45,7 @@ public abstract class AbstractRequest {
     private RequestMethod method;//请求类型、post、get、head……
 
     @Value("request.type")
-    private String type;//发送请求的方式的类型，默认htmlUnit
+    private String type="htmlUnit";//发送请求的方式的类型，默认htmlUnit
 
 
 

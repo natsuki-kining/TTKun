@@ -3,6 +3,7 @@ package com.natsuki_kining.ttkun.crawler.core.rule.json;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
+import com.natsuki_kining.ttkun.crawler.core.rule.json.proxy.ActionJDKProxy;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,7 +24,13 @@ public class OperateAction implements IOperateAction {
 
     @Override
     public Object action(OperateRule operateRule) {
-        return getAction(operateRule).action(operateRule);
+        IOperateAction proxy = new ActionJDKProxy(getAction(operateRule)).getProxy();
+        return proxy.action(operateRule);
+    }
+
+    @Override
+    public Object init(OperateRule operateRule) {
+        return null;
     }
 
     private IOperateAction getAction(OperateRule operateRule){

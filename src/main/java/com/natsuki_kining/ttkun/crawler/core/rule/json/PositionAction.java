@@ -23,9 +23,6 @@ public class PositionAction implements IOperateAction {
     @Override
     public Object action(OperateRule operateRule) {
         PositionRule positionRule = operateRule.getPosition();
-        if (positionRule == null){
-            throw new RuleException("positionRule 为空。");
-        }
         Element element = operateRule.getElement();
         Integer index = positionRule.getIndex();
         if (index == -1){
@@ -33,6 +30,11 @@ public class PositionAction implements IOperateAction {
         }else{
             return getElement(element,positionRule);
         }
+    }
+
+    @Override
+    public Object init(OperateRule operateRule) {
+        return null;
     }
 
     private Elements getElements(Element element, PositionRule positionRule) {

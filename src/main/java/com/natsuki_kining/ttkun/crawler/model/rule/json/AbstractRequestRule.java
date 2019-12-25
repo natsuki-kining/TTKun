@@ -19,11 +19,4 @@ public abstract class AbstractRequestRule extends JsonRule {
     private String method;
     private String convertType = "html";//转换类型。html转成document。json转成jsonObject
 
-
-    public String getReferer() {
-        if (StringUtils.isBlank(referer) && StringUtils.isNotBlank(url) && url.startsWith("http")){
-            this.referer = this.url.substring(0,this.url.indexOf("/",url.indexOf("//")+2)+1);
-        }
-        return referer;
-    }
 }

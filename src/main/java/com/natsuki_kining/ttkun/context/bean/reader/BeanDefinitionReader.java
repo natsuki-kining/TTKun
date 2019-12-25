@@ -7,9 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Properties;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * 对配置文件进行查找、读取、解析
@@ -23,10 +21,9 @@ public class BeanDefinitionReader {
     private Properties config = new Properties();
 
     public BeanDefinitionReader(String ... properties) throws Exception {
-        if (properties == null || properties.length == 0){
-            load(true,"application.properties");
-        }else{
-            load(true,properties);
+        load(true,"application.properties");
+        if (properties != null && properties.length > 0){
+            load(false,properties);
         }
     }
 
@@ -34,7 +31,7 @@ public class BeanDefinitionReader {
      * @param flag true,加载内部文件，false加载外部文件
      * @param properties
      */
-    public void load(boolean flag,String ... properties) throws Exception {
+    private void load(boolean flag,String ... properties) throws Exception {
         if (ArrayUtils.isEmpty(properties)){
             throw new Exception("读取的配置文件不能为空");
         }
@@ -91,22 +88,8 @@ public class BeanDefinitionReader {
         }
     }
 
-    public void load(String ... properties) throws Exception {
-        load(false,properties);
-    }
-
     public Properties getConfig() {
         return config;
     }
 
-    /**
-     * 将首字母转为小写
-     * @param simpleName
-     * @return
-     */
-    private String toLowerFirstCase(String simpleName){
-        char[] chars = simpleName.toCharArray();
-        chars[0] += 32;
-        return String.valueOf(chars);
-    }
 }
