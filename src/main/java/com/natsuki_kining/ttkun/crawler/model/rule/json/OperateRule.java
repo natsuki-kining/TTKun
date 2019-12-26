@@ -3,7 +3,6 @@ package com.natsuki_kining.ttkun.crawler.model.rule.json;
 import com.natsuki_kining.ttkun.crawler.common.excption.CloneException;
 import com.natsuki_kining.ttkun.crawler.model.rule.JsonRule;
 import lombok.Data;
-import org.jsoup.nodes.Element;
 
 /**
  * 一次操作，指向下一次操作
@@ -28,7 +27,7 @@ public class OperateRule extends JsonRule implements Cloneable {
 
     private OperateRule nextStep;//下一步
 
-    private Element element;
+    private Object operateData;
 
     private int listIndex;//集合下标
 
@@ -37,7 +36,7 @@ public class OperateRule extends JsonRule implements Cloneable {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new CloneException("OperateRule clone失败："+e.getMessage(),e);
+            throw new CloneException("OperateRule clone失败：" + e.getMessage(), e);
         }
     }
 }

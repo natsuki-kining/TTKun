@@ -3,7 +3,8 @@ package com.natsuki_kining.ttkun.crawler.core.request.convert;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.excption.RequestException;
-import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
+import com.natsuki_kining.ttkun.crawler.core.request.convert.proxy.ConvertJDKProxy;
+import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
 
 import java.util.Map;
 
@@ -14,17 +15,19 @@ import java.util.Map;
  * @Date 2019/12/23 14:47
  **/
 @Component
-public class ConvertDelegate {
+public class ConvertDelegate implements IConvert {
 
     @Autowired
-    private Map<String,IConvert> convertMap;
+    private Map<String, IConvert> convertMap;
 
-    public Object convert(RequestPOJO requestPOJO, Object response) {
-        IConvert convert = convertMap.get(requestPOJO.getConvertType()+"Convert");
-        if (convert == null){
-            throw new RequestException("找不到 "+requestPOJO.getConvertType()+" 转换类型。");
+    @Override
+    public Object convert(RequestRule requestRule, Object response) {
+        IConvert convert = convertMap.get(requestRule.getConvertType() + "Convert");
+        if (convert == null) {
+            throw new RequestException("找不到 " + requestRule.getConvertType() + " 转换类型。");
         }
-        return convert.convert(response);
+        IConvert convertProxy = new ConvertJDKProxy(convert).getProxy();
+        return convertProxy.convert(requestRule, response);
     }
 
 }

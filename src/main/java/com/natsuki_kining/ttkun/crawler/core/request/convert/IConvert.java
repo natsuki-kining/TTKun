@@ -1,5 +1,7 @@
 package com.natsuki_kining.ttkun.crawler.core.request.convert;
 
+import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
+
 /**
  * 转换接口
  *
@@ -8,5 +10,5 @@ package com.natsuki_kining.ttkun.crawler.core.request.convert;
  **/
 public interface IConvert {
 
-    Object convert(Object response);
+    Object convert(RequestRule requestRule, Object response);
 }

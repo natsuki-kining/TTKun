@@ -1,13 +1,13 @@
 package com.natsuki_kining.ttkun.crawler.core.rule;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
-import com.natsuki_kining.ttkun.context.annotation.Run;
 import com.natsuki_kining.ttkun.context.annotation.Value;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.UrlUtil;
-import com.natsuki_kining.ttkun.crawler.core.request.HttpRequest;
 import com.natsuki_kining.ttkun.crawler.core.rule.json.OperateAction;
 import com.natsuki_kining.ttkun.crawler.model.rule.JsonRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
@@ -66,12 +66,25 @@ public class JsonRuleAction extends AbstractRuleAction {
             } else if (object instanceof Element) {
                 Element element = (Element) object;
                 action(operateRule, p, element);
+            } else if (object instanceof JSONObject) {
+                JSONObject jsonObject = (JSONObject) object;
+                action(operateRule, p, jsonObject);
+            } else if (object instanceof JSONArray) {
+                JSONArray jsonArray = (JSONArray) object;
+                Stream.iterate(0, i -> i + 1)
+                        .limit(jsonArray.size())
+                        .forEach(index -> {
+                            JSONObject jsonObject = jsonArray.getJSONObject(index);
+                            OperateRule operateRuleClone = (OperateRule) operateRule.clone();
+                            operateRuleClone.setListIndex(index);
+                            action(operateRuleClone, p, jsonObject);
+                        });
             }
         }
     }
 
-    private void action(OperateRule operateRule, OperateRule p, Element element) {
-        operateRule.setElement(element);
+    private void action(OperateRule operateRule, OperateRule p, Object object) {
+        operateRule.setOperateData(object);
         operateRule.setLastStep(p);
         action(operateRule);
     }
