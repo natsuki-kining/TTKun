@@ -39,6 +39,7 @@ public abstract class AbstractDownload {
             HttpResponse response = response = httpClient.execute(httpGet);
             byte[] btImg = readInputStream(response);//得到资源的二进制数据
             writeImageToDisk(btImg, savePath, fileName);
+            log.info("{}下载完成。", fileName);
         } catch (Exception e) {
             log.error("{} 下载失败。", url);
             log.error(e.getMessage(), e);

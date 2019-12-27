@@ -9,7 +9,7 @@ import com.natsuki_kining.ttkun.context.annotation.Component;
  * @Date 2019/12/15 11:35
  **/
 @Component
-public class ImageDownload extends AbstractDownload{
+public class ImageDownload extends AbstractDownload {
 
     @Override
     public void download(String url, String referer, String savePath, String fileName) {

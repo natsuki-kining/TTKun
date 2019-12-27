@@ -13,6 +13,7 @@
     },
     "nextStep": {
       "type": "position",
+      "operateName": "chapter",
       "position": {
         "type": "tag",
         "key": "a",

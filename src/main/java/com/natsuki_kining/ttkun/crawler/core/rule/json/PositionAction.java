@@ -1,11 +1,13 @@
 package com.natsuki_kining.ttkun.crawler.core.rule.json;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.natsuki_kining.ttkun.context.annotation.Component;
+import com.natsuki_kining.ttkun.context.annotation.Value;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
+import com.natsuki_kining.ttkun.crawler.model.enums.PositionType;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.PositionRule;
-import com.natsuki_kining.ttkun.crawler.model.enums.PositionType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
@@ -21,6 +23,11 @@ import org.jsoup.select.Elements;
 @Slf4j
 public class PositionAction implements IOperateAction {
 
+    @Value("crawler.chapter.start")
+    private String chapterStart;
+    @Value("crawler.chapter")
+    private String chapter;
+
     @Override
     public Object action(OperateRule operateRule) {
         return operateRule.getPosition().getData();
@@ -34,58 +41,89 @@ public class PositionAction implements IOperateAction {
         }
         Object operateData = operateRule.getOperateData();
         Integer index = positionRule.getIndex();
-        if (index == -1) {
-            return getObjects(operateData, positionRule);
-        } else {
-            return getObject(operateData, positionRule);
-        }
-    }
 
-    private Object getObjects(Object operateData, PositionRule positionRule) {
-        if (operateData instanceof Element) {
-            Element element = (Element) operateData;
-            return getElements(element, positionRule);
-        } else if (operateData instanceof JSONObject) {
-            JSONObject jsonObject = (JSONObject) operateData;
-            return getJSONArray(jsonObject, positionRule);
-        }
-        return null;
-    }
-
-    private Object getObject(Object operateData, PositionRule positionRule) {
-        if (operateData instanceof Element) {
-            Element element = (Element) operateData;
-            return getElements(element, positionRule).get(0);
-        } else if (operateData instanceof JSONObject) {
-            JSONObject jsonObject = (JSONObject) operateData;
-            return getJSONArray(jsonObject, positionRule);
-        }
-        return null;
-    }
-
-    private Elements getElements(Element element, PositionRule positionRule) {
         String type = positionRule.getType();
         String key = positionRule.getKey();
         String value = positionRule.getValue();
-        Integer index = positionRule.getIndex();
-        Elements target = null;
-        if (PositionType.ATTRIBUTE.toString().equals(type)) {
-            target = element.getElementsByAttributeValue(key, value);
-        } else if (PositionType.TAG.toString().equals(type)) {
-            target = element.getElementsByTag(key);
-        } else {
-            throw new RuleException("找不到该position的type：" + type);
-        }
-        if (index != -1) {
-            Element e = target.get(index);
-            target = new Elements();
-            target.add(e);
-        }
-        return target;
-    }
 
-    private Elements getJSONArray(JSONObject jsonObject, PositionRule positionRule) {
+        if (operateData instanceof Element) {
+            Element element = (Element) operateData;
+            Elements target = null;
+            if (PositionType.ATTRIBUTE.toString().equals(type)) {
+                target = element.getElementsByAttributeValue(key, value);
+            } else if (PositionType.TAG.toString().equals(type)) {
+                target = element.getElementsByTag(key);
+            } else {
+                throw new RuleException("找不到该position的type：" + type);
+            }
+            if (index == -1) {
+                return getChapters(target, operateRule);
+            } else {
+                return target.get(index);
+            }
+        } else if (operateData instanceof JSONObject) {
+            JSONObject jsonObject = (JSONObject) operateData;
+            if (index == -1) {
+                return getChapters(jsonObject.get(key), operateRule);
+            } else {
+                return jsonObject.get(key);
+            }
+        }
         return null;
     }
+
+    private Object getChapters(Object data, OperateRule operateRule) {
+        if (!"chapter".equals(operateRule.getOperateName())) {
+            return data;
+        }
+        if (StringUtils.isBlank(chapter) && StringUtils.isBlank(chapterStart)) {
+            return data;
+        }
+        if (data instanceof Elements) {
+            Elements elements = (Elements) data;
+            if (StringUtils.isNotBlank(chapter)) {
+                return elements.stream().filter(element -> element.text().contains(chapter)).findFirst().orElse(null);
+            }
+            Elements objects = new Elements();
+            int index = 0;
+            for (int i = 0; i < elements.size(); i++) {
+                if (elements.get(i).text().contains(chapterStart)) {
+                    index = i;
+                    break;
+                }
+            }
+            for (int i = 0; i < elements.size(); i++) {
+                if (index >= i) {
+                    objects.add(elements.get(i));
+                } else {
+                    break;
+                }
+            }
+            return objects;
+        } else if (data instanceof JSONArray) {
+            JSONArray jsonArray = (JSONArray) data;
+            if (StringUtils.isNotBlank(chapter)) {
+                return jsonArray.stream().filter(json -> json.toString().contains(chapter)).findFirst().orElse(null);
+            }
+            JSONArray objects = new JSONArray();
+            int index = 0;
+            for (int i = 0; i < jsonArray.size(); i++) {
+                if (jsonArray.get(i).toString().contains(chapterStart)) {
+                    index = i;
+                    break;
+                }
+            }
+            for (int i = 0; i < jsonArray.size(); i++) {
+                if (index >= i) {
+                    objects.add(jsonArray.get(i));
+                } else {
+                    break;
+                }
+            }
+            return objects;
+        }
+        return null;
+    }
+
 
 }

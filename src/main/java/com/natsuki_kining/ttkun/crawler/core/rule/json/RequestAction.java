@@ -56,10 +56,13 @@ public class RequestAction implements IOperateAction {
             requestPOJO.setReferer(requestRule.getReferer());
         }
 
+        String urlName = "";
         if (StringUtils.isNotBlank(requestRule.getUrlName())) {
-            String urlName = OperateDataUtil.get(operateData, requestRule.getUrlName());
-            requestPOJO.setUrlName(urlName);
+            urlName = OperateDataUtil.get(operateData, requestRule.getUrlName());
+        } else {
+            urlName = requestPOJO.getUrl().replace(requestPOJO.getReferer(), "");
         }
+        requestPOJO.setUrlName(urlName);
 
         return requestPOJO;
     }

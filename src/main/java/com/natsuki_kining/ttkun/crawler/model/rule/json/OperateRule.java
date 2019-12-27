@@ -15,7 +15,9 @@ public class OperateRule extends JsonRule implements Cloneable {
 
     private String type;
 
-    private Integer index;
+    private String operateIndex;
+
+    private String operateName;
 
     private PositionRule position;
 

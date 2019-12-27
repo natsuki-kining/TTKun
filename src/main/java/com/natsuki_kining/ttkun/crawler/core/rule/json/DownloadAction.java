@@ -8,9 +8,11 @@ import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.OperateDataUtil;
 import com.natsuki_kining.ttkun.crawler.common.utils.RuleUtil;
 import com.natsuki_kining.ttkun.crawler.common.utils.StringUtil;
+import com.natsuki_kining.ttkun.crawler.concurrent.threadpool.FixedThreadPool;
 import com.natsuki_kining.ttkun.crawler.core.download.AbstractDownload;
 import com.natsuki_kining.ttkun.crawler.model.enums.DownloadType;
 import com.natsuki_kining.ttkun.crawler.model.pojo.DownloadPOJO;
+import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.DownloadRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
@@ -18,8 +20,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * 处理下载操作
@@ -33,13 +33,13 @@ public class DownloadAction implements IOperateAction {
 
     @Autowired
     private Map<String, AbstractDownload> downloadMap;
+    @Autowired
+    private FixedThreadPool fixedThreadPool;
 
     @Value("save.path")
     private String savePath;
     @Value("download.use.multithreading.enable")
     private Boolean multithreadingEnable;
-
-    ExecutorService cachedThreadPool = Executors.newCachedThreadPool();
 
     @Override
     public Object action(OperateRule operateRule) {
@@ -47,7 +47,7 @@ public class DownloadAction implements IOperateAction {
         DownloadRule downloadRule = operateRule.getDownload();
         AbstractDownload abstractDownload = getDownloadType(downloadRule);
         if (multithreadingEnable) {
-            cachedThreadPool.execute(() -> {
+            fixedThreadPool.threadPool.execute(() -> {
                 abstractDownload.download(downloadPOJO.getUrl(), downloadPOJO.getReferer(), downloadPOJO.getPath(), downloadPOJO.getName());
             });
         } else {
@@ -104,7 +104,9 @@ public class DownloadAction implements IOperateAction {
         if (or != null) {
             RequestRule rr = or.getRequest();
             if (StringUtils.isNotBlank(rr.getUrlName())) {
-                lastUrlName = OperateDataUtil.get(or.getData(), rr.getUrlName());
+                lastUrlName = OperateDataUtil.get(or.getOperateData(), rr.getUrlName());
+            } else {
+                lastUrlName = ((RequestPOJO) rr.getData()).getUrlName();
             }
         }
         if (StringUtils.isNotBlank(downloadRule.getPath())) {
