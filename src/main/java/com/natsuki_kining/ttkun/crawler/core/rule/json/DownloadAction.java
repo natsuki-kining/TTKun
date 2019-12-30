@@ -8,7 +8,7 @@ import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.OperateDataUtil;
 import com.natsuki_kining.ttkun.crawler.common.utils.RuleUtil;
 import com.natsuki_kining.ttkun.crawler.common.utils.StringUtil;
-import com.natsuki_kining.ttkun.crawler.concurrent.threadpool.FixedThreadPool;
+import com.natsuki_kining.ttkun.crawler.concurrent.FixedThreadPool;
 import com.natsuki_kining.ttkun.crawler.core.download.AbstractDownload;
 import com.natsuki_kining.ttkun.crawler.model.enums.DownloadType;
 import com.natsuki_kining.ttkun.crawler.model.pojo.DownloadPOJO;
@@ -47,7 +47,7 @@ public class DownloadAction implements IOperateAction {
         DownloadRule downloadRule = operateRule.getDownload();
         AbstractDownload abstractDownload = getDownloadType(downloadRule);
         if (multithreadingEnable) {
-            fixedThreadPool.threadPool.execute(() -> {
+            fixedThreadPool.downloadMangaThreadPool.execute(() -> {
                 abstractDownload.download(downloadPOJO.getUrl(), downloadPOJO.getReferer(), downloadPOJO.getPath(), downloadPOJO.getName());
             });
         } else {

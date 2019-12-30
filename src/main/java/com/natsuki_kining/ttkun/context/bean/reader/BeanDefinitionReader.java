@@ -1,5 +1,6 @@
 package com.natsuki_kining.ttkun.context.bean.reader;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.io.FileInputStream;
@@ -15,16 +16,20 @@ import java.util.Properties;
  * @Author natsuki_kining
  * @Date 2019/12/15 17:57
  **/
+@Slf4j
 public class BeanDefinitionReader {
 
     private List<String> registryBeanClasses = new ArrayList<>();
     private Properties config = new Properties();
 
     public BeanDefinitionReader(String ... properties) throws Exception {
+        log.info("properties:{}",properties);
         load(true,"application.properties");
+        log.info("crawler.rule.path:{}",config.get("crawler.rule.path"));
         if (properties != null && properties.length > 0){
             load(false,properties);
         }
+        log.info("crawler.rule.path:{}",config.get("crawler.rule.path"));
     }
 
     /**
@@ -57,21 +62,7 @@ public class BeanDefinitionReader {
                 p.entrySet().forEach(entry->{
                     Object key = entry.getKey();
                     Object value = entry.getValue();
-                    Object configValue = config.get(key);
-                    if (configValue != null){
-                        if (configValue instanceof List){
-                            List<String> configValues = (List<String>)configValue;
-                            configValues.add(value.toString());
-                            config.put(key,configValues);
-                        }else{
-                            List<String> newConfigValue = new ArrayList<>();
-                            newConfigValue.add(configValue.toString());
-                            newConfigValue.add(value.toString());
-                            config.put(key,newConfigValue);
-                        }
-                    }else{
-                        config.put(key,value);
-                    }
+                    config.put(key,value);
                 });
 
             }

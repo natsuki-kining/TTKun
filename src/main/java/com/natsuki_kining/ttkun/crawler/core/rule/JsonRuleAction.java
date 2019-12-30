@@ -6,14 +6,17 @@ import com.alibaba.fastjson.JSONObject;
 import com.natsuki_kining.ttkun.context.annotation.Autowired;
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.context.annotation.Value;
+import com.natsuki_kining.ttkun.context.variables.SystemVariables;
 import com.natsuki_kining.ttkun.crawler.common.excption.RuleException;
 import com.natsuki_kining.ttkun.crawler.common.utils.UrlUtil;
+import com.natsuki_kining.ttkun.crawler.concurrent.FixedThreadPool;
 import com.natsuki_kining.ttkun.crawler.core.rule.json.OperateAction;
 import com.natsuki_kining.ttkun.crawler.model.rule.JsonRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
@@ -34,12 +37,15 @@ public class JsonRuleAction extends AbstractRuleAction {
 
     @Value("crawler.url")
     private String url;
-
-    @Value
-    private String ruleFilePath;
+    @Value("crawler.rule.path")
+    private String rulePath;
+    @Value("download.use.multithreading.enable")
+    private Boolean multithreadingEnable;
 
     @Autowired
     private OperateAction operateAction;
+    @Autowired
+    private FixedThreadPool fixedThreadPool;
 
     private String defaultRuleFilePath = "rule/";
 
@@ -53,6 +59,17 @@ public class JsonRuleAction extends AbstractRuleAction {
         Object object = operateAction.action(p);
         OperateRule operateRule = p.getNextStep();
         if (operateRule != null) {
+            if ("chapter".equals(operateRule.getOperateName()) && multithreadingEnable) {
+                fixedThreadPool.downloadChapterThreadPool.execute(()->{
+                    action(object,operateRule,p);
+                });
+            } else {
+                action(object,operateRule,p);
+            }
+        }
+    }
+
+    private void action(Object object,OperateRule operateRule,OperateRule p){
             if (object instanceof Elements) {
                 Elements elements = (Elements) object;
                 Stream.iterate(0, i -> i + 1)
@@ -61,14 +78,14 @@ public class JsonRuleAction extends AbstractRuleAction {
                             Element element = elements.get(index);
                             OperateRule operateRuleClone = (OperateRule) operateRule.clone();
                             operateRuleClone.setListIndex(index);
-                            action(operateRuleClone, p, element);
+                            setOperateRuleProperties(operateRuleClone, p, element);
                         });
             } else if (object instanceof Element) {
                 Element element = (Element) object;
-                action(operateRule, p, element);
+                setOperateRuleProperties(operateRule, p, element);
             } else if (object instanceof JSONObject) {
                 JSONObject jsonObject = (JSONObject) object;
-                action(operateRule, p, jsonObject);
+                setOperateRuleProperties(operateRule, p, jsonObject);
             } else if (object instanceof JSONArray) {
                 JSONArray jsonArray = (JSONArray) object;
                 Stream.iterate(0, i -> i + 1)
@@ -77,13 +94,12 @@ public class JsonRuleAction extends AbstractRuleAction {
                             JSONObject jsonObject = jsonArray.getJSONObject(index);
                             OperateRule operateRuleClone = (OperateRule) operateRule.clone();
                             operateRuleClone.setListIndex(index);
-                            action(operateRuleClone, p, jsonObject);
+                            setOperateRuleProperties(operateRuleClone, p, jsonObject);
                         });
             }
         }
-    }
 
-    private void action(OperateRule operateRule, OperateRule p, Object object) {
+    private void setOperateRuleProperties(OperateRule operateRule, OperateRule p, Object object) {
         operateRule.setOperateData(object);
         operateRule.setLastStep(p);
         action(operateRule);
@@ -91,25 +107,40 @@ public class JsonRuleAction extends AbstractRuleAction {
 
     @Override
     public JsonRule getRule() {
+        if (StringUtils.isBlank(url)){
+            throw new RuleException("url 不能为空。");
+        }
         String website = UrlUtil.getWebsite(url);
-        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ruleFilePath + website + ".json");
+        boolean useDirectory = StringUtils.isBlank(rulePath) ? false : new File(rulePath).isDirectory();
+        String jsonString = null;
+        if (useDirectory){
+            jsonString = getRuleByDirectory(website);
+        }else {
+            jsonString = getRuleByClasspath(website);
+        }
+        OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
+        return operateRule;
+    }
+
+    public String getRuleByClasspath(String website) {
+        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(defaultRuleFilePath + SystemVariables.FILE_SEPARATOR + website + ".json");
         try {
             String jsonString = IOUtils.toString(resourceAsStream, "UTF-8");
-            OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
-            return operateRule;
+            return jsonString;
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new RuleException(e.getMessage(), e);
         }
     }
 
-    @Override
-    public JsonRule getRule(String ruleFile) {
-        File file = new File(ruleFile);
+    public String getRuleByDirectory(String website) {
+        File file = new File(rulePath + SystemVariables.FILE_SEPARATOR + website + ".json");
+        if (!file.exists() || !file.isFile()){
+            throw new RuleException("规则文件不存在");
+        }
         try {
             String jsonString = FileUtils.readFileToString(file, "UTF-8");
-            OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
-            return operateRule;
+            return jsonString;
         } catch (IOException e) {
             log.error(e.getMessage(), e);
             throw new RuleException(e.getMessage(), e);

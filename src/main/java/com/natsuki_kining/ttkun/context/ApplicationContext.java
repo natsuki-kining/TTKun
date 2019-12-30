@@ -156,7 +156,7 @@ public class ApplicationContext {
         if (ArrayUtils.isNotEmpty(args)){
             for (String arg : args) {
                 if (arg.startsWith(ProjectVariables.Arguments.PROPERTIES)){
-                    properties = arg.replace(ProjectVariables.Arguments.PROPERTIES,"").split(".");
+                    properties = arg.replace(ProjectVariables.Arguments.PROPERTIES,"").split(",");
                     break;
                 }
             }

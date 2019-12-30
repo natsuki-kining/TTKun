@@ -34,8 +34,4 @@ public class RuleAction extends AbstractRuleAction {
         return ruleActionMap.get(type).getRule();
     }
 
-    @Override
-    public Rule getRule(String ruleFile) {
-        return ruleActionMap.get(type).getRule(ruleFile);
-    }
 }

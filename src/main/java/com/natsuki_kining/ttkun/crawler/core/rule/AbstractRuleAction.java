@@ -14,5 +14,4 @@ public abstract class AbstractRuleAction {
 
     public abstract Rule getRule();
 
-    public abstract Rule getRule(String ruleFile);
 }

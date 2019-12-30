@@ -30,6 +30,9 @@ public class JsoupType extends AbstractRequestType {
                     .userAgent(request.getUserAgent())
                     .timeout(request.getTimeout())
                     .ignoreContentType(true);
+            if (request.getCookies() != null){
+                connection.cookies(request.getCookies());
+            }
             if (request.getMethod() != null) {
                 connection.method(getMethod(request.getMethod()));
             }

@@ -48,7 +48,6 @@ public abstract class AbstractRequest {
     private String type="htmlUnit";//发送请求的方式的类型，默认htmlUnit
 
 
-
     //method
 
     public void setUrl(String url) {
