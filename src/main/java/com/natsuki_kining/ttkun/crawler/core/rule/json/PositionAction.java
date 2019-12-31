@@ -85,20 +85,10 @@ public class PositionAction implements IOperateAction {
                 return elements.stream().filter(element -> element.text().contains(chapter)).findFirst().orElse(null);
             }
             Elements objects = new Elements();
-            int index = 0;
-            for (int i = 0; i < elements.size(); i++) {
-                if (elements.get(i).text().contains(chapterStart)) {
-                    index = i;
-                    break;
-                }
-            }
-            for (int i = 0; i < elements.size(); i++) {
-                if (index >= i) {
-                    objects.add(elements.get(i));
-                } else {
-                    break;
-                }
-            }
+            elements.stream().filter(element -> {
+                objects.add(element);
+                return element.text().contains(chapterStart);
+            }).findAny().orElse(null);
             return objects;
         } else if (data instanceof JSONArray) {
             JSONArray jsonArray = (JSONArray) data;
@@ -106,20 +96,10 @@ public class PositionAction implements IOperateAction {
                 return jsonArray.stream().filter(json -> json.toString().contains(chapter)).findFirst().orElse(null);
             }
             JSONArray objects = new JSONArray();
-            int index = 0;
-            for (int i = 0; i < jsonArray.size(); i++) {
-                if (jsonArray.get(i).toString().contains(chapterStart)) {
-                    index = i;
-                    break;
-                }
-            }
-            for (int i = 0; i < jsonArray.size(); i++) {
-                if (index >= i) {
-                    objects.add(jsonArray.get(i));
-                } else {
-                    break;
-                }
-            }
+            jsonArray.stream().filter(jsonObject -> {
+                objects.add(jsonObject);
+                return jsonObject.toString().contains(chapterStart);
+            }).findAny().orElse(null);;
             return objects;
         }
         return null;

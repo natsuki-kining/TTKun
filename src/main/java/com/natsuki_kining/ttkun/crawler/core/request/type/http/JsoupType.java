@@ -33,6 +33,9 @@ public class JsoupType extends AbstractRequestType {
             if (request.getCookies() != null){
                 connection.cookies(request.getCookies());
             }
+            if (request.getParameters() != null){
+                connection.data(request.getParameters());
+            }
             if (request.getMethod() != null) {
                 connection.method(getMethod(request.getMethod()));
             }

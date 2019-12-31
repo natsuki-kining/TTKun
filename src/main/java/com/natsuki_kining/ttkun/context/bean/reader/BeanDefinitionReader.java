@@ -1,5 +1,6 @@
 package com.natsuki_kining.ttkun.context.bean.reader;
 
+import com.natsuki_kining.ttkun.crawler.common.excption.TtIOException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -67,7 +68,7 @@ public class BeanDefinitionReader {
 
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new TtIOException(e.getMessage(),e);
         } finally {
             for (InputStream inputStream : inputStreams) {
                 try {

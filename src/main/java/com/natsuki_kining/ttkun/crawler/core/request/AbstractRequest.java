@@ -3,7 +3,6 @@ package com.natsuki_kining.ttkun.crawler.core.request;
 import com.natsuki_kining.ttkun.context.annotation.Value;
 import com.natsuki_kining.ttkun.crawler.model.enums.RequestMethod;
 import lombok.Data;
-import lombok.Getter;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Map;
@@ -14,7 +13,7 @@ import java.util.Map;
  * @Author : natsuki_kining
  * @Date : 2019/12/19 0:24
  */
-@Getter
+@Data
 public abstract class AbstractRequest {
 
     @Value("request.timeout")
@@ -36,17 +35,18 @@ public abstract class AbstractRequest {
     @Value("request.content.type")
     private String contentType;//指示资源的MIME类型
 
-    private String url;//请求地址
+    @Value("request.type")
+    private String type="htmlUnit";//发送请求的方式的类型，默认htmlUnit
 
-    private Map<String, String> cookies;//cookie
+    private String url;//请求地址
 
     private String referer;//referer
 
     private RequestMethod method;//请求类型、post、get、head……
 
-    @Value("request.type")
-    private String type="htmlUnit";//发送请求的方式的类型，默认htmlUnit
+    private Map<String, String> cookies;//cookie
 
+    private Map<String, String> parameters;//发送的参数
 
     //method
 

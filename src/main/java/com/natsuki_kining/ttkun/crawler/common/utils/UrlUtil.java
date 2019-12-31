@@ -16,7 +16,10 @@ public class UrlUtil {
             throw new ConvertException("url 为空");
         }
         url = url.substring(url.indexOf("//")+2);
-        url = url.substring(0,url.indexOf("/"));
+        int index = url.indexOf("/");
+        if (index != -1){
+            url = url.substring(0,index);
+        }
         return url;
     }
 

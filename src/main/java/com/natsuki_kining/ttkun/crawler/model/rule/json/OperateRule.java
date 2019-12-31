@@ -25,6 +25,8 @@ public class OperateRule extends JsonRule implements Cloneable {
 
     private RequestRule request;
 
+    private LoginRule login;
+
     private OperateRule lastStep;//上一步
 
     private OperateRule nextStep;//下一步
