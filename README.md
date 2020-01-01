@@ -39,3 +39,4 @@
     2.5 `crawler.chapter` 为只下载此章节的内容，值为标题的内容。  
     2.6 `crawler.rule.path` 为规则文件的地址，默认为当前文件夹下的rule文件夹。  
     2.7 `download.use.multithreading.enable`默认为true，如果为true则开启多线程模式，根据`download.manga.thread.pool.size`,`download.chapter.thread.pool.size`里的配置，下载的速度会比单线程高出很多。
+3.运行`run.bat`文件。
