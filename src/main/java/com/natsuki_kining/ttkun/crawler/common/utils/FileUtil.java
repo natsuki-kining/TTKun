@@ -13,6 +13,7 @@ import java.io.IOException;
  *
  * @Author natsuki_kining
  * @Date 2019/12/18 16:34
+ * @Version 1.0.0
  **/
 @Slf4j
 public class FileUtil {
@@ -48,8 +49,8 @@ public class FileUtil {
         try {
             FileUtils.copyDirectory(srcDir, destDir);
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
-            throw new TtIOException(e.getMessage(),e);
+            log.error(e.getMessage(), e);
+            throw new TtIOException(e.getMessage(), e);
         }
     }
 
@@ -57,8 +58,8 @@ public class FileUtil {
         try {
             FileUtils.copyFile(srcDir, destDir);
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
-            throw new TtIOException(e.getMessage(),e);
+            log.error(e.getMessage(), e);
+            throw new TtIOException(e.getMessage(), e);
         }
     }
 
@@ -66,8 +67,8 @@ public class FileUtil {
         try {
             FileUtils.forceDelete(file);
         } catch (IOException e) {
-            log.error(e.getMessage(),e);
-            throw new TtIOException(e.getMessage(),e);
+            log.error(e.getMessage(), e);
+            throw new TtIOException(e.getMessage(), e);
         }
     }
 

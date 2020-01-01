@@ -16,6 +16,7 @@ import java.util.Properties;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 17:57
+ * @Version 1.0.0
  **/
 @Slf4j
 public class BeanDefinitionReader {
@@ -23,33 +24,33 @@ public class BeanDefinitionReader {
     private List<String> registryBeanClasses = new ArrayList<>();
     private Properties config = new Properties();
 
-    public BeanDefinitionReader(String ... properties) throws Exception {
-        log.info("properties:{}",properties);
-        load(true,"application.properties");
-        log.info("crawler.rule.path:{}",config.get("crawler.rule.path"));
-        if (properties != null && properties.length > 0){
-            load(false,properties);
+    public BeanDefinitionReader(String... properties) throws Exception {
+        log.info("properties:{}", properties);
+        load(true, "application.properties");
+        log.info("crawler.rule.path:{}", config.get("crawler.rule.path"));
+        if (properties != null && properties.length > 0) {
+            load(false, properties);
         }
-        log.info("crawler.rule.path:{}",config.get("crawler.rule.path"));
+        log.info("crawler.rule.path:{}", config.get("crawler.rule.path"));
     }
 
     /**
-     * @param flag true,加载内部文件，false加载外部文件
+     * @param flag       true,加载内部文件，false加载外部文件
      * @param properties
      */
-    private void load(boolean flag,String ... properties) throws Exception {
-        if (ArrayUtils.isEmpty(properties)){
+    private void load(boolean flag, String... properties) throws Exception {
+        if (ArrayUtils.isEmpty(properties)) {
             throw new Exception("读取的配置文件不能为空");
         }
         List<InputStream> inputStreams = new ArrayList<>();
         InputStream is = null;
         try {
-            if (flag){
+            if (flag) {
                 for (String property : properties) {
                     is = this.getClass().getClassLoader().getResourceAsStream(property);
                     inputStreams.add(is);
                 }
-            }else{
+            } else {
                 for (String property : properties) {
                     is = new FileInputStream(property);
                     inputStreams.add(is);
@@ -60,15 +61,15 @@ public class BeanDefinitionReader {
             for (InputStream inputStream : inputStreams) {
                 p = new Properties();
                 p.load(inputStream);
-                p.entrySet().forEach(entry->{
+                p.entrySet().forEach(entry -> {
                     Object key = entry.getKey();
                     Object value = entry.getValue();
-                    config.put(key,value);
+                    config.put(key, value);
                 });
 
             }
         } catch (Exception e) {
-            throw new TtIOException(e.getMessage(),e);
+            throw new TtIOException(e.getMessage(), e);
         } finally {
             for (InputStream inputStream : inputStreams) {
                 try {

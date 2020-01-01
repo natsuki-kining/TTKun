@@ -14,13 +14,14 @@ import java.util.Map;
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:32
+ * @Version 1.0.0
  **/
 @Component
 @Slf4j
 public class OperateAction implements IOperateAction {
 
     @Autowired
-    private Map<String,IOperateAction> operateActionMap;
+    private Map<String, IOperateAction> operateActionMap;
 
     @Override
     public Object action(OperateRule operateRule) {
@@ -33,10 +34,10 @@ public class OperateAction implements IOperateAction {
         return null;
     }
 
-    private IOperateAction getAction(OperateRule operateRule){
-        IOperateAction action = operateActionMap.get(operateRule.getType()+"Action");
-        if (action == null){
-            throw new RuleException("找不到 "+operateRule.getType()+" action。");
+    private IOperateAction getAction(OperateRule operateRule) {
+        IOperateAction action = operateActionMap.get(operateRule.getType() + "Action");
+        if (action == null) {
+            throw new RuleException("找不到 " + operateRule.getType() + " action。");
         }
         return action;
     }

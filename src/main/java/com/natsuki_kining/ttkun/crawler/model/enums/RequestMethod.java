@@ -5,6 +5,7 @@ package com.natsuki_kining.ttkun.crawler.model.enums;
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 10:14
+ * @Version 1.0.0
  **/
 public enum RequestMethod {
 

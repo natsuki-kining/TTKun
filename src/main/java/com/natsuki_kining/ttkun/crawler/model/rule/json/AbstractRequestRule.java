@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:28
+ * @Version 1.0.0
  **/
 @Data
 public abstract class AbstractRequestRule extends JsonRule {

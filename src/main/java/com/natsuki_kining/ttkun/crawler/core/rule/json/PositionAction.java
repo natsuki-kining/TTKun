@@ -18,6 +18,7 @@ import org.jsoup.select.Elements;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/16 21:59
+ * @Version 1.0.0
  */
 @Component
 @Slf4j
@@ -99,7 +100,8 @@ public class PositionAction implements IOperateAction {
             jsonArray.stream().filter(jsonObject -> {
                 objects.add(jsonObject);
                 return jsonObject.toString().contains(chapterStart);
-            }).findAny().orElse(null);;
+            }).findAny().orElse(null);
+            ;
             return objects;
         }
         return null;

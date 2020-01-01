@@ -5,6 +5,7 @@ package com.natsuki_kining.ttkun.context.variables;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 16:04
+ * @Version 1.0.0
  **/
 public class ProjectVariables {
 
@@ -16,14 +17,14 @@ public class ProjectVariables {
         if (path.contains("jar")) {
             path = path.substring(0, path.lastIndexOf("."));
             CLASS_PATH = path.substring(0, path.lastIndexOf("/"));
-        }else {
+        } else {
             CLASS_PATH = path;
         }
     }
 
     public static String CLASS_PATH;
 
-    public interface Arguments{
+    public interface Arguments {
         String PARAM_FLAG = "-D";
         String PROPERTIES = "-Dproperties=";
     }

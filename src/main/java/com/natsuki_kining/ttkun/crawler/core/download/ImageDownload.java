@@ -7,6 +7,7 @@ import com.natsuki_kining.ttkun.context.annotation.Component;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 11:35
+ * @Version 1.0.0
  **/
 @Component
 public class ImageDownload extends AbstractDownload {

@@ -26,6 +26,7 @@ import java.util.Map;
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:31
+ * @Version 1.0.0
  **/
 @Component
 @Slf4j

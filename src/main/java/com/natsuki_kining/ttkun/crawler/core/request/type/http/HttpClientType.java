@@ -15,6 +15,7 @@ import org.apache.http.util.EntityUtils;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 17:31
+ * @Version 1.0.0
  **/
 public class HttpClientType extends AbstractRequestType {
 
@@ -43,7 +44,7 @@ public class HttpClientType extends AbstractRequestType {
             }
         } catch (Exception e) {
             httpGet.releaseConnection();
-            throw new RequestException(e.getMessage(),e);
+            throw new RequestException(e.getMessage(), e);
         }
         return result;
     }

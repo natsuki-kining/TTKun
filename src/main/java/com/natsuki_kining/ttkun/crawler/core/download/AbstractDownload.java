@@ -21,6 +21,7 @@ import java.io.OutputStream;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 11:34
+ * @Version 1.0.0
  **/
 @Slf4j
 public abstract class AbstractDownload {

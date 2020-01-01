@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 16:25
+ * @Version 1.0.0
  **/
 @Slf4j
 @Component

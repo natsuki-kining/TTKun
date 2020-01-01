@@ -2,9 +2,9 @@ package com.natsuki_kining.ttkun.crawler.core.request.type.http;
 
 import com.natsuki_kining.ttkun.context.annotation.Component;
 import com.natsuki_kining.ttkun.crawler.common.excption.RequestException;
+import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
 import com.natsuki_kining.ttkun.crawler.core.request.type.AbstractRequestType;
 import com.natsuki_kining.ttkun.crawler.model.enums.RequestMethod;
-import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
 import org.jsoup.Connection;
 
 import java.io.IOException;
@@ -14,6 +14,7 @@ import java.io.IOException;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 16:33
+ * @Version 1.0.0
  **/
 @Component
 public class JsoupType extends AbstractRequestType {
@@ -30,10 +31,10 @@ public class JsoupType extends AbstractRequestType {
                     .userAgent(request.getUserAgent())
                     .timeout(request.getTimeout())
                     .ignoreContentType(true);
-            if (request.getCookies() != null){
+            if (request.getCookies() != null) {
                 connection.cookies(request.getCookies());
             }
-            if (request.getParameters() != null){
+            if (request.getParameters() != null) {
                 connection.data(request.getParameters());
             }
             if (request.getMethod() != null) {

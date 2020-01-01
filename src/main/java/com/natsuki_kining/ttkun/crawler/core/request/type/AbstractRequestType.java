@@ -8,6 +8,7 @@ import com.natsuki_kining.ttkun.crawler.core.request.AbstractRequest;
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 9:55
+ * @Version 1.0.0
  **/
 public abstract class AbstractRequestType {
 

@@ -9,6 +9,7 @@ import lombok.Data;
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 9:58
+ * @Version 1.0.0
  **/
 @Data
 @Component
@@ -19,7 +20,7 @@ public class HttpRequest extends AbstractRequest implements Cloneable {
         try {
             return super.clone();
         } catch (CloneNotSupportedException e) {
-            throw new CloneException("HttpRequest clone失败："+e.getMessage(),e);
+            throw new CloneException("HttpRequest clone失败：" + e.getMessage(), e);
         }
     }
 

@@ -7,6 +7,7 @@ import lombok.Data;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 23:08
+ * @Version 1.0.0
  **/
 @Data
 public class DownloadRule extends AbstractRequestRule {

@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/18 22:34
+ * @Version 1.0.0
  */
 @Data
 public class RequestPOJO {

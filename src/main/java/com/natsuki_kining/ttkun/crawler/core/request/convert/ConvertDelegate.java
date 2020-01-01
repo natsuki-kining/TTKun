@@ -13,6 +13,7 @@ import java.util.Map;
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 14:47
+ * @Version 1.0.0
  **/
 @Component
 public class ConvertDelegate implements IConvert {

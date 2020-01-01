@@ -8,6 +8,7 @@ import lombok.Data;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/31 22:58
+ * @Version 1.0.0
  */
 @Data
 public class LoginRule extends JsonRule {

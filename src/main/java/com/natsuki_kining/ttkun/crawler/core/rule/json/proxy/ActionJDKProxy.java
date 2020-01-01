@@ -17,6 +17,7 @@ import java.lang.reflect.Proxy;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/25 23:27
+ * @Version 1.0.0
  */
 @Slf4j
 public class ActionJDKProxy implements InvocationHandler {
@@ -33,19 +34,19 @@ public class ActionJDKProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        if(args[0] == null){
+        if (args[0] == null) {
             throw new RuleException("operate is null!");
         }
-        OperateRule operateRules = (OperateRule)args[0];
+        OperateRule operateRules = (OperateRule) args[0];
         Field field = OperateRule.class.getDeclaredField(operateRules.getType());
         field.setAccessible(true);
-        if(field.get(operateRules) == null){
-            throw new RuleException(operateRules.getType()+"Rule is null!");
+        if (field.get(operateRules) == null) {
+            throw new RuleException(operateRules.getType() + "Rule is null!");
         }
 
         Object init = target.init(operateRules);
-        Rule rule = (Rule)field.get(operateRules);
+        Rule rule = (Rule) field.get(operateRules);
         rule.setData(init);
-        return method.invoke(this.target,args);
+        return method.invoke(this.target, args);
     }
 }

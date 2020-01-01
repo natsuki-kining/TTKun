@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 17:41
+ * @Version 1.0.0
  **/
 @Slf4j
 public class ApplicationBoot {
@@ -17,12 +18,12 @@ public class ApplicationBoot {
             String[] initArguments = initArguments(args);
 
             //初始化容器
-            ApplicationContext.getInstance().init(applicationClass,initArguments);
+            ApplicationContext.getInstance().init(applicationClass, initArguments);
 
             //run
             ApplicationContext.getInstance().run();
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             System.exit(1);
         }
     }

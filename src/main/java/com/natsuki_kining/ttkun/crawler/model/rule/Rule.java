@@ -7,6 +7,7 @@ import lombok.Data;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/16 21:44
+ * @Version 1.0.0
  */
 @Data
 public abstract class Rule {

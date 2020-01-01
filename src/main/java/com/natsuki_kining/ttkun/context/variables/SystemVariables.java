@@ -5,6 +5,7 @@ package com.natsuki_kining.ttkun.context.variables;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 16:06
+ * @Version 1.0.0
  **/
 public class SystemVariables {
 

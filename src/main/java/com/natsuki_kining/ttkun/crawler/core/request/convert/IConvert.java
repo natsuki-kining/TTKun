@@ -7,6 +7,7 @@ import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 14:33
+ * @Version 1.0.0
  **/
 public interface IConvert {
 

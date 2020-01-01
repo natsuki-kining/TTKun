@@ -14,6 +14,7 @@ import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/19 0:25
+ * @Version 1.0.0
  */
 @Component
 public class RequestDelegate extends AbstractRequestType {

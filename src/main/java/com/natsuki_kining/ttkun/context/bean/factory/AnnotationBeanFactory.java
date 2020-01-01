@@ -8,16 +8,17 @@ import lombok.extern.slf4j.Slf4j;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 17:25
+ * @Version 1.0.0
  **/
 @Slf4j
 public class AnnotationBeanFactory implements BeanFactory {
 
     private static AnnotationBeanFactory annotationBeanFactory = new AnnotationBeanFactory();
 
-    private AnnotationBeanFactory(){
+    private AnnotationBeanFactory() {
     }
 
-    public static AnnotationBeanFactory getInstance(){
+    public static AnnotationBeanFactory getInstance() {
         return annotationBeanFactory;
     }
 
@@ -27,10 +28,10 @@ public class AnnotationBeanFactory implements BeanFactory {
         try {
             o = beanClass.newInstance();
         } catch (Exception e) {
-            log.error(e.getMessage(),e);
+            log.error(e.getMessage(), e);
             System.exit(1);
         }
-        return (T)o;
+        return (T) o;
     }
 
     public AnnotationBeanWrapper createBeanWrapper() {

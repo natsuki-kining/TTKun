@@ -30,6 +30,7 @@ import java.util.stream.Stream;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 11:26
+ * @Version 1.0.0
  **/
 @Component
 @Slf4j
@@ -60,44 +61,44 @@ public class JsonRuleAction extends AbstractRuleAction {
         OperateRule operateRule = p.getNextStep();
         if (operateRule != null) {
             if ("chapter".equals(operateRule.getOperateName()) && multithreadingEnable) {
-                fixedThreadPool.downloadChapterThreadPool.execute(()->{
-                    action(object,operateRule,p);
+                fixedThreadPool.downloadChapterThreadPool.execute(() -> {
+                    action(object, operateRule, p);
                 });
             } else {
-                action(object,operateRule,p);
+                action(object, operateRule, p);
             }
         }
     }
 
-    private void action(Object object,OperateRule operateRule,OperateRule p){
-            if (object instanceof Elements) {
-                Elements elements = (Elements) object;
-                Stream.iterate(0, i -> i + 1)
-                        .limit(elements.size())
-                        .forEach(index -> {
-                            Element element = elements.get(index);
-                            OperateRule operateRuleClone = (OperateRule) operateRule.clone();
-                            operateRuleClone.setListIndex(index);
-                            setOperateRuleProperties(operateRuleClone, p, element);
-                        });
-            } else if (object instanceof Element) {
-                Element element = (Element) object;
-                setOperateRuleProperties(operateRule, p, element);
-            } else if (object instanceof JSONObject) {
-                JSONObject jsonObject = (JSONObject) object;
-                setOperateRuleProperties(operateRule, p, jsonObject);
-            } else if (object instanceof JSONArray) {
-                JSONArray jsonArray = (JSONArray) object;
-                Stream.iterate(0, i -> i + 1)
-                        .limit(jsonArray.size())
-                        .forEach(index -> {
-                            JSONObject jsonObject = jsonArray.getJSONObject(index);
-                            OperateRule operateRuleClone = (OperateRule) operateRule.clone();
-                            operateRuleClone.setListIndex(index);
-                            setOperateRuleProperties(operateRuleClone, p, jsonObject);
-                        });
-            }
+    private void action(Object object, OperateRule operateRule, OperateRule p) {
+        if (object instanceof Elements) {
+            Elements elements = (Elements) object;
+            Stream.iterate(0, i -> i + 1)
+                    .limit(elements.size())
+                    .forEach(index -> {
+                        Element element = elements.get(index);
+                        OperateRule operateRuleClone = (OperateRule) operateRule.clone();
+                        operateRuleClone.setListIndex(index);
+                        setOperateRuleProperties(operateRuleClone, p, element);
+                    });
+        } else if (object instanceof Element) {
+            Element element = (Element) object;
+            setOperateRuleProperties(operateRule, p, element);
+        } else if (object instanceof JSONObject) {
+            JSONObject jsonObject = (JSONObject) object;
+            setOperateRuleProperties(operateRule, p, jsonObject);
+        } else if (object instanceof JSONArray) {
+            JSONArray jsonArray = (JSONArray) object;
+            Stream.iterate(0, i -> i + 1)
+                    .limit(jsonArray.size())
+                    .forEach(index -> {
+                        JSONObject jsonObject = jsonArray.getJSONObject(index);
+                        OperateRule operateRuleClone = (OperateRule) operateRule.clone();
+                        operateRuleClone.setListIndex(index);
+                        setOperateRuleProperties(operateRuleClone, p, jsonObject);
+                    });
         }
+    }
 
     private void setOperateRuleProperties(OperateRule operateRule, OperateRule p, Object object) {
         operateRule.setOperateData(object);
@@ -107,15 +108,15 @@ public class JsonRuleAction extends AbstractRuleAction {
 
     @Override
     public JsonRule getRule() {
-        if (StringUtils.isBlank(url)){
+        if (StringUtils.isBlank(url)) {
             throw new RuleException("url 不能为空。");
         }
         String website = UrlUtil.getWebsite(url);
         boolean useDirectory = StringUtils.isBlank(rulePath) ? false : new File(rulePath).isDirectory();
         String jsonString = null;
-        if (useDirectory){
+        if (useDirectory) {
             jsonString = getRuleByDirectory(website);
-        }else {
+        } else {
             jsonString = getRuleByClasspath(website);
         }
         OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
@@ -135,7 +136,7 @@ public class JsonRuleAction extends AbstractRuleAction {
 
     public String getRuleByDirectory(String website) {
         File file = new File(rulePath + SystemVariables.FILE_SEPARATOR + website + ".json");
-        if (!file.exists() || !file.isFile()){
+        if (!file.exists() || !file.isFile()) {
             throw new RuleException("规则文件不存在");
         }
         try {

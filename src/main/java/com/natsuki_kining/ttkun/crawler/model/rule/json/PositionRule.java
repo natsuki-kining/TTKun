@@ -10,6 +10,7 @@ import java.util.List;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 23:03
+ * @Version 1.0.0
  **/
 @Data
 public class PositionRule extends JsonRule {

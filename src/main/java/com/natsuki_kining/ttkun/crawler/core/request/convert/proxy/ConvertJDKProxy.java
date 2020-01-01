@@ -15,6 +15,7 @@ import java.lang.reflect.Proxy;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/25 23:27
+ * @Version 1.0.0
  */
 @Slf4j
 public class ConvertJDKProxy implements InvocationHandler {

@@ -12,6 +12,7 @@ import java.util.concurrent.Executors;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/28 0:03
+ * @Version 1.0.0
  */
 @Component
 public class FixedThreadPool {

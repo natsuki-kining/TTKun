@@ -8,6 +8,7 @@ import lombok.Data;
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 9:59
+ * @Version 1.0.0
  **/
 @Data
 @Component

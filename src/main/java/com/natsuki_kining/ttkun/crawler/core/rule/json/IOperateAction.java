@@ -7,6 +7,7 @@ import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:36
+ * @Version 1.0.0
  **/
 public interface IOperateAction {
 

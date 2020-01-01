@@ -7,6 +7,7 @@ import com.natsuki_kining.ttkun.crawler.model.rule.Rule;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 11:26
+ * @Version 1.0.0
  **/
 public abstract class AbstractRuleAction {
 

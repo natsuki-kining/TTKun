@@ -12,6 +12,7 @@ import java.util.Map;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/19 0:24
+ * @Version 1.0.0
  */
 @Data
 public abstract class AbstractRequest {
@@ -36,7 +37,7 @@ public abstract class AbstractRequest {
     private String contentType;//指示资源的MIME类型
 
     @Value("request.type")
-    private String type="htmlUnit";//发送请求的方式的类型，默认htmlUnit
+    private String type = "htmlUnit";//发送请求的方式的类型，默认htmlUnit
 
     private String url;//请求地址
 
@@ -54,11 +55,11 @@ public abstract class AbstractRequest {
         this.url = url;
     }
 
-    public void appendUrl(String url){
-        if (StringUtils.isBlank(this.url)){
+    public void appendUrl(String url) {
+        if (StringUtils.isBlank(this.url)) {
             this.url = url;
-        }else{
-            this.url = this.url.substring(0,this.url.lastIndexOf("/"))+"/"+url;
+        } else {
+            this.url = this.url.substring(0, this.url.lastIndexOf("/")) + "/" + url;
         }
     }
 
