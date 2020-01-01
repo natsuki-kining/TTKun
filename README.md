@@ -27,6 +27,7 @@
 1. 根据`rule.json`里定义的规则和自己想爬取数据，编写自己的自定义规则.
 2. 文件命名为网站的uri加上`.json`
 3. 写好后放到rule文件夹里。
+4. 如果不会写，可以提到[issues](https://gitee.com/natsuki_kining/TTKun/issues)里。
 
 ## 2.4 修改配置文件
 1. 打开`application.properties`，
