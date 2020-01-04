@@ -12,7 +12,8 @@ import java.util.Map;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/19 0:24
- * @Version 1.0.0
+ * @UpdateDate 2020/1/4 16:25:00
+ * @Version 1.1.0
  */
 @Data
 public abstract class AbstractRequest {
@@ -46,6 +47,8 @@ public abstract class AbstractRequest {
     private RequestMethod method;//请求类型、post、get、head……
 
     private Map<String, String> cookies;//cookie
+
+    private Map<String,String> headers;//head
 
     private Map<String, String> parameters;//发送的参数
 

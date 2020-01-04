@@ -13,7 +13,8 @@ import java.util.Map;
  *
  * @Author natsuki_kining
  * @Date 2019/12/23 9:53
- * @Version 1.0.0
+ * @UpdateDate 2020/1/4 16:25:00
+ * @Version 1.1.0
  **/
 @Component
 @Slf4j
@@ -24,7 +25,7 @@ public class RequestTypeDelegate extends AbstractRequestType {
 
     @Override
     public Object doRequest(AbstractRequest request) {
-        log.info("使用：{} 发送方式。", request.getType());
+        log.debug("使用：{} 发送方式。", request.getType());
         AbstractRequestType requestType = requestTypeMap.get(request.getType() + "Type");
         if (requestType == null) {
             throw new AnalysisException("没有该" + request.getType() + "发送方式。");

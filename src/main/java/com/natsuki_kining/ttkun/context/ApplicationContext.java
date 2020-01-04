@@ -32,7 +32,8 @@ import java.util.jar.JarFile;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 17:18
- * @Version 1.0.0
+ * @UpdateDate 2020/1/4 16:25:00
+ * @Version 1.1.0
  **/
 @Slf4j
 public class ApplicationContext {
@@ -72,6 +73,7 @@ public class ApplicationContext {
         initBeanFieldsByValue();
         initBeanFieldsByAutowired();
         runAnnotationMethod(RunInit.class);
+        log.info("初始化容器完成……");
     }
 
     /**
@@ -182,7 +184,7 @@ public class ApplicationContext {
      * 扫描需要加入到容器的类
      */
     private void doScanner() {
-        log.info("开始扫描包……");
+        log.debug("开始扫描包……");
         if (ArrayUtils.isNotEmpty(scanPackages)) {
             List<String> scanPackageList = Arrays.asList(scanPackages);
             if (applicationFiles == null) {
@@ -231,7 +233,7 @@ public class ApplicationContext {
         }
         Component component = clazz.getAnnotation(Component.class);
         if (component != null) {
-            log.info("找到类：{}", clazz);
+            log.debug("找到类：{}", clazz);
             hasComponentAnnotationClasses.add(clazz);
         }
     }
@@ -253,7 +255,7 @@ public class ApplicationContext {
             beanWrapper.setAnnotations(clazz.getAnnotations());
             beanWrapper.setBeanClass(clazz);
             beanWrapper.setBeanName(key);
-            log.info("往ioc容器里注册：{}", clazz);
+            log.debug("往ioc容器里注册：{}", clazz);
             inversionOfControlMap.put(beanWrapper.getBeanClass(), beanWrapper);
         });
     }
@@ -267,7 +269,7 @@ public class ApplicationContext {
             fields.stream()
                     .filter(field -> field.isAnnotationPresent(Autowired.class))
                     .forEach(field -> {
-                        log.info("DI Autowired自动往{}依赖注入：{}", clazz, field.getName());
+                        log.debug("DI Autowired自动往{}依赖注入：{}", clazz, field.getName());
                         field.setAccessible(true);
                         initFiledByAutowired(field, clazz);
                     });
@@ -302,7 +304,7 @@ public class ApplicationContext {
                     .filter(field -> field.isAnnotationPresent(Value.class))
                     .forEach(field -> {
                         field.setAccessible(true);
-                        log.info("DI Value自动往{}依赖注入：{}", clazz, field.getName());
+                        log.debug("DI Value自动往{}依赖注入：{}", clazz, field.getName());
                         initFiledByValue(field, clazz);
                     });
         });

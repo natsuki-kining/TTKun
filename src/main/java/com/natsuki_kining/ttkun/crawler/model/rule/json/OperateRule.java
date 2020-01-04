@@ -9,7 +9,8 @@ import lombok.Data;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 23:02
- * @Version 1.0.0
+ * @UpdateDate 2020/1/4 16:25:00
+ * @Version 1.1.0
  **/
 @Data
 public class OperateRule extends JsonRule implements Cloneable {
@@ -27,6 +28,8 @@ public class OperateRule extends JsonRule implements Cloneable {
     private RequestRule request;
 
     private LoginRule login;
+
+    private TokenRule token;
 
     private OperateRule lastStep;//上一步
 

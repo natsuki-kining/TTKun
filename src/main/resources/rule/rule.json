@@ -1,5 +1,5 @@
 {
-    "type" : "position/download/request",//position则是定位这个（这个集合）元素，download则是下载操作,发送请求获取document
+    "type" : "position/download/request/login/token",//position则是定位这个（这个集合）元素;download则是下载操作;request:发送请求获取获取请求报文;login登录（暂不支持有验证码登录）;token:用户的登录信息，先自己浏览器上登录完成后，通过F12查看获取。。
     "operateIndex": 1, //操作节点下标，用于自旋
     "operateName": "", //操作节点名称，用于判断。例如需要设置从第几话开始下载、这里需要填chapter
     "position" : {
@@ -21,6 +21,23 @@
       "convertType":"html",//转换类型。html转成document。json转成jsonObject。默认html
       "referer": null,//null表示使用默认值,
       "urlName": null //链接的名字，元素的attribute key
+    },
+    "login": {
+      "account": "",//登录账号
+      "password": "",//登录密码
+      "loginUrl": "",//发送请求地址
+      "referer": "",//referer
+      "loginAccountName": "",//发送请求的登录账号名
+      "loginPasswordName": "",//发送请求的登录密码名
+      "loginRequestMethod": ""//请求类型：get、post……，默认post
+    },
+    "token": {
+      "heads": { //设置head信息，key:value
+
+      },
+      "cookies": { //设置cookie信息,key:value
+
+      }
     },
     "nextStep": {
       //下一次的操作

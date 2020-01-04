@@ -14,7 +14,8 @@ import java.io.IOException;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 16:33
- * @Version 1.0.0
+ * @UpdateDate 2020/1/4 16:25:00
+ * @Version 1.1.0
  **/
 @Component
 public class JsoupType extends AbstractRequestType {
@@ -36,6 +37,9 @@ public class JsoupType extends AbstractRequestType {
             }
             if (request.getParameters() != null) {
                 connection.data(request.getParameters());
+            }
+            if (request.getHeaders() != null){
+                connection.headers(request.getHeaders());
             }
             if (request.getMethod() != null) {
                 connection.method(getMethod(request.getMethod()));

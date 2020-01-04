@@ -16,7 +16,8 @@ import java.util.Properties;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 17:57
- * @Version 1.0.0
+ * @UpdateDate 2020/1/4 16:25:00
+ * @Version 1.1.0
  **/
 @Slf4j
 public class BeanDefinitionReader {
@@ -25,13 +26,10 @@ public class BeanDefinitionReader {
     private Properties config = new Properties();
 
     public BeanDefinitionReader(String... properties) throws Exception {
-        log.info("properties:{}", properties);
         load(true, "application.properties");
-        log.info("crawler.rule.path:{}", config.get("crawler.rule.path"));
         if (properties != null && properties.length > 0) {
             load(false, properties);
         }
-        log.info("crawler.rule.path:{}", config.get("crawler.rule.path"));
     }
 
     /**

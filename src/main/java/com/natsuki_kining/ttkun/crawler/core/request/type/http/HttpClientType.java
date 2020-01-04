@@ -15,7 +15,8 @@ import org.apache.http.util.EntityUtils;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 17:31
- * @Version 1.0.0
+ * @UpdateDate 2020/1/4 16:25:00
+ * @Version 1.1.0
  **/
 public class HttpClientType extends AbstractRequestType {
 
@@ -33,7 +34,22 @@ public class HttpClientType extends AbstractRequestType {
             httpGet.addHeader("Accept", request.getAccept());
             httpGet.addHeader("Accept-Encoding", request.getAcceptEncoding());
             httpGet.addHeader("Accept-Language", request.getAcceptLanguage());
-
+            if (request.getHeaders() != null) {
+                for (String key : request.getHeaders().keySet()) {
+                    httpGet.setHeader(key, request.getHeaders().get(key));
+                }
+            }
+            if (request.getCookies() != null) {
+                StringBuilder builder = new StringBuilder();
+                for (String key : request.getCookies().keySet()) {
+                    builder.append(key);
+                    builder.append("=");
+                    builder.append(request.getCookies().get(key));
+                    builder.append(";");
+                }
+                builder.deleteCharAt(builder.length() - 1);
+                httpGet.setHeader("cookie", builder.toString());
+            }
             HttpResponse response = httpClient.execute(httpGet);
             if (response != null) {
                 HttpEntity resEntity = response.getEntity();
@@ -48,4 +64,5 @@ public class HttpClientType extends AbstractRequestType {
         }
         return result;
     }
+
 }
