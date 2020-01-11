@@ -12,13 +12,14 @@ import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.jsoup.nodes.Element;
 
 /**
  * 处理请求操作
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:31
- * @Version 1.0.0
+ * @Version 1.1.1
  **/
 @Component
 @Slf4j
@@ -44,7 +45,10 @@ public class RequestAction implements IOperateAction {
         requestPOJO.setConvertType(requestRule.getConvertType());
 
         String url = requestRule.getUrl();
-        if (StringUtils.isNotBlank(url) && !url.startsWith("http")) {
+        if (StringUtils.isBlank(url)){
+            url = "#{referer}/%attr{href}";
+        }
+        if (!url.startsWith("http")) {
             if (url.contains("$") || url.contains("#") || url.contains("%")) {
                 url = getUrlValue(operateRule, url, operateData);
             } else {
@@ -61,7 +65,13 @@ public class RequestAction implements IOperateAction {
         if (StringUtils.isNotBlank(requestRule.getUrlName())) {
             urlName = OperateDataUtil.get(operateData, requestRule.getUrlName());
         } else {
-            urlName = requestPOJO.getUrl().replace(requestPOJO.getReferer(), "");
+            if (operateData instanceof Element) {
+                Element element = (Element) operateData;
+                urlName = element.text();
+            }
+            if (StringUtils.isBlank(urlName)){
+                urlName = requestPOJO.getUrl().replace(requestPOJO.getReferer(), "");
+            }
         }
         requestPOJO.setUrlName(urlName);
 

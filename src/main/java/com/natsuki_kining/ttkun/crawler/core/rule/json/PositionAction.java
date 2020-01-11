@@ -18,7 +18,7 @@ import org.jsoup.select.Elements;
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/16 21:59
- * @Version 1.0.0
+ * @Version 1.1.1
  */
 @Component
 @Slf4j
@@ -88,6 +88,7 @@ public class PositionAction implements IOperateAction {
             Elements objects = new Elements();
             elements.stream().filter(element -> {
                 objects.add(element);
+                log.info("准备下载：{}",element.text());
                 return element.text().contains(chapterStart);
             }).findAny().orElse(null);
             return objects;
@@ -99,6 +100,7 @@ public class PositionAction implements IOperateAction {
             JSONArray objects = new JSONArray();
             jsonArray.stream().filter(jsonObject -> {
                 objects.add(jsonObject);
+                log.info("准备下载：{}",jsonObject.toString());
                 return jsonObject.toString().contains(chapterStart);
             }).findAny().orElse(null);
             ;

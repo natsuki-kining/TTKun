@@ -7,10 +7,10 @@ import lombok.Data;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 23:09
- * @Version 1.0.0
+ * @Version 1.1.1
  **/
 @Data
 public class RequestRule extends AbstractRequestRule {
 
-    private String urlName;
+    private String urlName = "title";
 }

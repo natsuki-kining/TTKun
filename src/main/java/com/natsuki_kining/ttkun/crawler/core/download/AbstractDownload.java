@@ -21,7 +21,7 @@ import java.io.OutputStream;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 11:34
- * @Version 1.0.0
+ * @Version 1.1.1
  **/
 @Slf4j
 public abstract class AbstractDownload {
@@ -31,6 +31,7 @@ public abstract class AbstractDownload {
 
     public void download(String url, String referer, String savePath, String fileName) {
         try {
+            savePath = FileUtil.formatPath(savePath);
             log.info("开始下载文件：{}", url);
             HttpGet httpGet = new HttpGet(url);
             httpGet.setHeader("User-Agent", httpRequest.getUserAgent());
@@ -42,7 +43,7 @@ public abstract class AbstractDownload {
             writeImageToDisk(btImg, savePath, fileName);
             log.info("{}下载完成。", fileName);
         } catch (Exception e) {
-            log.error("{} 下载失败。", url);
+            log.error("{}:{} 下载失败。", savePath+fileName,url);
             log.error(e.getMessage(), e);
         }
     }
