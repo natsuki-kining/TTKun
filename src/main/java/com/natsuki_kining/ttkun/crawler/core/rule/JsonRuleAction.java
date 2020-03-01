@@ -30,7 +30,7 @@ import java.util.stream.Stream;
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 11:26
- * @Version 1.0.0
+ * @Version 1.2.0
  **/
 @Component
 @Slf4j
@@ -42,6 +42,8 @@ public class JsonRuleAction extends AbstractRuleAction {
     private String rulePath;
     @Value("download.use.multithreading.enable")
     private Boolean multithreadingEnable;
+    @Value("use.default.rule.file")
+    private Boolean useDefaultRuleFile;
 
     @Autowired
     private OperateAction operateAction;
@@ -112,20 +114,47 @@ public class JsonRuleAction extends AbstractRuleAction {
             throw new RuleException("url 不能为空。");
         }
         String website = UrlUtil.getWebsite(url);
-        boolean useDirectory = StringUtils.isBlank(rulePath) ? false : new File(rulePath).isDirectory();
         String jsonString = null;
-        if (useDirectory) {
-            jsonString = getRuleByDirectory(website);
-        } else {
+        if (StringUtils.isBlank(rulePath)) {
+            //使用自带规则
             jsonString = getRuleByClasspath(website);
+            if (jsonString == null){
+                jsonString = defaultRule();
+            }
+        }else{
+            //使用本地自定义规则
+            boolean rulePathExist = new File(rulePath).isDirectory();
+            if (!rulePathExist){
+                throw new RuleException("无法获取规则目录，请检查路径是否正确。");
+            }
+            File file = new File(rulePath + SystemVariables.FILE_SEPARATOR + website + ".json");
+            if (!file.exists() || !file.isFile()) {
+                jsonString = defaultRule();
+            }else{
+                try {
+                    jsonString = FileUtils.readFileToString(file, "UTF-8");
+                } catch (IOException e) {
+                    log.error(e.getMessage(), e);
+                    throw new RuleException(e.getMessage(), e);
+                }
+            }
+
         }
         OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
         return operateRule;
     }
 
+    /**
+     * 获取resources下的文件
+     * @param website
+     * @return
+     */
     public String getRuleByClasspath(String website) {
         InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(defaultRuleFilePath + SystemVariables.FILE_SEPARATOR + website + ".json");
         try {
+            if (resourceAsStream==null){
+                return null;
+            }
             String jsonString = IOUtils.toString(resourceAsStream, "UTF-8");
             return jsonString;
         } catch (IOException e) {
@@ -134,17 +163,15 @@ public class JsonRuleAction extends AbstractRuleAction {
         }
     }
 
-    public String getRuleByDirectory(String website) {
-        File file = new File(rulePath + SystemVariables.FILE_SEPARATOR + website + ".json");
-        if (!file.exists() || !file.isFile()) {
+    /**
+     * 获取默认规则
+     * @return
+     */
+    public String defaultRule(){
+        if (useDefaultRuleFile){
+            return getRuleByClasspath("default");
+        }else{
             throw new RuleException("规则文件不存在");
-        }
-        try {
-            String jsonString = FileUtils.readFileToString(file, "UTF-8");
-            return jsonString;
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            throw new RuleException(e.getMessage(), e);
         }
     }
 

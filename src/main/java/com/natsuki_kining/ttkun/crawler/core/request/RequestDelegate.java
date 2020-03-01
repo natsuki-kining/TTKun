@@ -8,13 +8,14 @@ import com.natsuki_kining.ttkun.crawler.core.request.type.AbstractRequestType;
 import com.natsuki_kining.ttkun.crawler.core.request.type.RequestTypeDelegate;
 import com.natsuki_kining.ttkun.crawler.model.pojo.RequestPOJO;
 import com.natsuki_kining.ttkun.crawler.model.rule.json.RequestRule;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * 请求委派
  *
  * @Author : natsuki_kining
  * @Date : 2019/12/19 0:25
- * @Version 1.0.0
+ * @Version 1.2.0
  */
 @Component
 public class RequestDelegate extends AbstractRequestType {
@@ -38,6 +39,9 @@ public class RequestDelegate extends AbstractRequestType {
         RequestPOJO requestPOJO = (RequestPOJO) requestRule.getData();
         request.setUrl((requestPOJO).getUrl());
         request.setReferer(requestPOJO.getReferer());
+        if (StringUtils.isNotBlank(requestRule.getRequestType())){
+            request.setType(requestRule.getRequestType());
+        }
         Object response = doRequest(request);
         Object convert = convertDelegate.convert(requestRule, response);
         return convert;

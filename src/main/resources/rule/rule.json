@@ -4,7 +4,7 @@
     "operateName": "", //操作节点名称，用于判断。例如需要设置从第几话开始下载、这里需要填chapter
     "position" : {
       "type": "attribute/tag",
-      "key" : "key",
+      "key" : "key",//tag name or attribute key
       "value" : "value",
       "index" : 0 //-1表示获取全部
     },
@@ -20,7 +20,8 @@
       "url": "src",//元素的attr键
       "convertType":"html",//转换类型。html转成document。json转成jsonObject。默认html
       "referer": null,//null表示使用默认值,
-      "urlName": null //链接的名字，元素的attribute key
+      "urlName": null, //链接的名字，元素的attribute key
+      "requestType": ""//获取html方式的类型，htmlUnit,jsoup
     },
     "token": {
       "heads": { //设置head信息，key:value

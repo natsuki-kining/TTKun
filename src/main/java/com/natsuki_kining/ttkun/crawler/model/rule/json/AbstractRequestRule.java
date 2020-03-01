@@ -9,7 +9,7 @@ import org.apache.commons.lang3.StringUtils;
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:28
- * @Version 1.0.0
+ * @Version 1.2.0
  **/
 @Data
 public abstract class AbstractRequestRule extends JsonRule {
@@ -19,5 +19,5 @@ public abstract class AbstractRequestRule extends JsonRule {
     private String referer;
     private String method;
     private String convertType = "html";//转换类型。html转成document。json转成jsonObject
-
+    private String requestType;//发送请求的方式，htmlUnit,jsoup……
 }

@@ -1,0 +1,21 @@
+{
+  "type": "request",
+  "request": {
+    "url": "${crawler.url}",
+    //"requestType": "htmlUnit"
+  },
+   "nextStep": {
+          "type": "position",
+          "position": {
+            "type": "tag",
+            "key": "img",
+            "index": -1
+          },
+          "nextStep": {
+            "type": "download",
+            "download": {
+              "urlAttr": "src"
+            }
+          }
+  }
+}

@@ -26,7 +26,7 @@ import java.util.Map;
  *
  * @Author natsuki_kining
  * @Date 2019/12/17 16:31
- * @Version 1.0.0
+ * @Version 1.2.0
  **/
 @Component
 @Slf4j
@@ -81,6 +81,10 @@ public class DownloadAction implements IOperateAction {
             url = OperateDataUtil.get(operateRule.getOperateData(), downloadRule.getUrlAttr());
         }
         url = StringUtil.replaceBlank(url);
+        if (StringUtils.isBlank(url)){
+            return download;
+        }
+
         download.setUrl(url);
 
         //设置name
