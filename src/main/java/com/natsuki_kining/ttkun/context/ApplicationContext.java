@@ -115,20 +115,24 @@ public class ApplicationContext {
 
     private void loadApplicationFiles() {
         URL resource = ApplicationContext.class.getResource("");
-        String jarPaht = resource.getFile();
-        if (jarPaht.contains(".jar")) {
-            jarPaht = jarPaht.substring(0, jarPaht.lastIndexOf("!")).replace("file:/", "");
-            applicationFiles = new ArrayList<>();
-            JarFile jarFile = null;
-            try {
-                jarFile = new JarFile(jarPaht);
-            } catch (IOException e1) {
-                e1.printStackTrace();
+        String jarPath = resource.getFile();
+        if (jarPath.contains(".jar")) {
+            jarPath = jarPath.substring(0, jarPath.lastIndexOf("!"));
+            if (System.getProperty("os.name").contains("Windows")){
+                jarPath = jarPath.replace("file:/", "");
+            }else{
+                jarPath = jarPath.replace("file:", "");
             }
-            Enumeration<JarEntry> ee = jarFile.entries();
-            while (ee.hasMoreElements()) {
-                JarEntry entry = (JarEntry) ee.nextElement();
-                applicationFiles.add(entry.getName());
+            applicationFiles = new ArrayList<>();
+            try {
+                JarFile jarFile = new JarFile(jarPath);
+                Enumeration<JarEntry> ee = jarFile.entries();
+                while (ee.hasMoreElements()) {
+                    JarEntry entry = ee.nextElement();
+                    applicationFiles.add(entry.getName());
+                }
+            } catch (IOException e) {
+                log.error(e.getMessage(),e);
             }
         }
     }
