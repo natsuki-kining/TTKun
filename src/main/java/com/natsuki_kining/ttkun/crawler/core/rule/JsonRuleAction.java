@@ -50,7 +50,7 @@ public class JsonRuleAction extends AbstractRuleAction {
     @Autowired
     private FixedThreadPool fixedThreadPool;
 
-    private String defaultRuleFilePath = "rule/";
+    private String defaultRuleFilePath = "rule";
 
     @Override
     public void action() {
@@ -116,7 +116,7 @@ public class JsonRuleAction extends AbstractRuleAction {
         String website = UrlUtil.getWebsite(url);
         String jsonString = null;
         if (StringUtils.isBlank(rulePath)) {
-            //使用自带规则
+            //使用jar包自带规则
             jsonString = getRuleByClasspath(website);
             if (jsonString == null){
                 jsonString = defaultRule();
@@ -127,8 +127,9 @@ public class JsonRuleAction extends AbstractRuleAction {
             if (!rulePathExist){
                 throw new RuleException("无法获取规则目录，请检查路径是否正确。");
             }
-            File file = new File(rulePath + SystemVariables.FILE_SEPARATOR + website + ".json");
-            if (!file.exists() || !file.isFile()) {
+            String filePath = rulePath + SystemVariables.FILE_SEPARATOR + website + ".json";
+            File file = fileExists(filePath);
+            if (file == null) {
                 jsonString = defaultRule();
             }else{
                 try {
@@ -138,7 +139,6 @@ public class JsonRuleAction extends AbstractRuleAction {
                     throw new RuleException(e.getMessage(), e);
                 }
             }
-
         }
         OperateRule operateRule = JSON.parseObject(jsonString, OperateRule.class);
         return operateRule;
@@ -149,12 +149,13 @@ public class JsonRuleAction extends AbstractRuleAction {
      * @param website
      * @return
      */
-    public String getRuleByClasspath(String website) {
-        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(defaultRuleFilePath + SystemVariables.FILE_SEPARATOR + website + ".json");
+    private String getRuleByClasspath(String website) {
+        String ruleFilePath = defaultRuleFilePath + "/" + website + ".json";
+        InputStream resourceAsStream = this.getClass().getClassLoader().getResourceAsStream(ruleFilePath);
+        if (resourceAsStream == null){
+            return null;
+        }
         try {
-            if (resourceAsStream==null){
-                return null;
-            }
             String jsonString = IOUtils.toString(resourceAsStream, "UTF-8");
             return jsonString;
         } catch (IOException e) {
@@ -167,7 +168,7 @@ public class JsonRuleAction extends AbstractRuleAction {
      * 获取默认规则
      * @return
      */
-    public String defaultRule(){
+    private String defaultRule(){
         if (useDefaultRuleFile){
             return getRuleByClasspath("default");
         }else{
@@ -175,4 +176,16 @@ public class JsonRuleAction extends AbstractRuleAction {
         }
     }
 
+    /**
+     * 文件是否存在
+     * @param filePath 文件路径
+     * @return
+     */
+    private File fileExists(String filePath){
+        File file = new File(filePath);
+        if (file.exists() && file.isFile()){
+            return file;
+        }
+        return null;
+    }
 }

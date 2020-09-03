@@ -8,7 +8,7 @@ import com.natsuki_kining.ttkun.crawler.core.rule.RuleAction;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 程序入口
+ * 爬虫实现主入口
  *
  * @Author natsuki_kining
  * @Date 2019/12/15 11:26

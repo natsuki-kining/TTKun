@@ -38,7 +38,7 @@ public abstract class AbstractDownload {
             httpGet.setHeader("Upgrade-Insecure-Requests", "1");
             httpGet.setHeader(HttpHeaders.REFERER, referer);
             CloseableHttpClient httpClient = HttpClients.createDefault();
-            HttpResponse response = response = httpClient.execute(httpGet);
+            HttpResponse response = httpClient.execute(httpGet);
             byte[] btImg = readInputStream(response);//得到资源的二进制数据
             writeImageToDisk(btImg, savePath, fileName);
             log.info("{}下载完成。", fileName);
@@ -50,7 +50,7 @@ public abstract class AbstractDownload {
 
     private void writeImageToDisk(byte[] img, String filePath, String fileName) {
         FileUtil.createPath(filePath);
-        try (OutputStream out = new FileOutputStream(filePath + "\\" + fileName);) {
+        try (OutputStream out = new FileOutputStream(filePath + "/" + fileName);) {
             out.write(img);
             out.flush();
         } catch (Exception e) {
