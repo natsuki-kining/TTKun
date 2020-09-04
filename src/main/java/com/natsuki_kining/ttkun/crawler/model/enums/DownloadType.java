@@ -9,12 +9,15 @@ package com.natsuki_kining.ttkun.crawler.model.enums;
  **/
 public enum DownloadType {
 
+    /**
+     * 图片下载
+     */
     IMAGE_DOWNLOAD("imageDownload"),
     ;
 
     private String value;
 
-    private DownloadType(String value) {
+    DownloadType(String value) {
         this.value = value;
     }
 

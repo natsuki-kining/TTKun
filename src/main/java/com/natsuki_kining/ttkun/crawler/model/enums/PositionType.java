@@ -9,7 +9,13 @@ package com.natsuki_kining.ttkun.crawler.model.enums;
  **/
 public enum PositionType {
 
+    /**
+     * 属性
+     */
     ATTRIBUTE("attribute"),
+    /**
+     * 标签
+     */
     TAG("tag");
 
     private String value;

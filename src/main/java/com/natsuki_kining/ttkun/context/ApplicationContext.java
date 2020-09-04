@@ -116,6 +116,9 @@ public class ApplicationContext {
     private void loadApplicationFiles() {
         URL resource = ApplicationContext.class.getResource("");
         String jarPath = resource.getFile();
+
+
+        log.info("jarPath:{}",jarPath);
         if (jarPath.contains(".jar")) {
             jarPath = jarPath.substring(0, jarPath.lastIndexOf("!"));
             if (System.getProperty("os.name").contains("Windows")){
@@ -129,6 +132,7 @@ public class ApplicationContext {
                 Enumeration<JarEntry> ee = jarFile.entries();
                 while (ee.hasMoreElements()) {
                     JarEntry entry = ee.nextElement();
+                    log.info("entry.getName():{}",entry.getName());
                     applicationFiles.add(entry.getName());
                 }
             } catch (IOException e) {
@@ -346,12 +350,12 @@ public class ApplicationContext {
         String fieldType = field.getGenericType().toString();
         // 如果类型是String
         try {
-            if (fieldType.equals("class java.lang.String")) {
+            if ("class java.lang.String".equals(fieldType)) {
                 propertiesValue = getPropertiesValueByParam(propertiesValue.toString());
                 field.set(object, propertiesValue);
             }
             // 如果类型是字符串数组
-            else if (fieldType.equals("class [Ljava.lang.String;")) {
+            else if ("class [Ljava.lang.String;".equals(fieldType)) {
                 if (propertiesValue instanceof String) {
                     String propertyValue = propertiesValue.toString();
                     if (propertyValue.contains(",")) {
@@ -366,22 +370,22 @@ public class ApplicationContext {
                 }
             }
             // 如果类型是字符串集合
-            else if (fieldType.equals("java.util.List<java.lang.String>")) {
+            else if ("java.util.List<java.lang.String>".equals(fieldType)) {
                 List<String> propertyValue = (List<String>) propertiesValue;
                 field.set(object, propertyValue);
             }
             // 如果类型是Integer
-            else if (fieldType.equals("class java.lang.Integer")) {
+            else if ("class java.lang.Integer".equals(fieldType)) {
                 int fieldValue = Integer.parseInt(propertiesValue.toString());
                 field.set(object, fieldValue);
             }
             // 如果类型是Double
-            else if (fieldType.equals("class java.lang.Double")) {
+            else if ("class java.lang.Double".equals(fieldType)) {
                 double fieldValue = Double.parseDouble(propertiesValue.toString());
                 field.set(object, fieldValue);
             }
             // 如果类型是Boolean 是封装类
-            else if (fieldType.equals("class java.lang.Boolean")) {
+            else if ("class java.lang.Boolean".equals(fieldType)) {
                 boolean fieldValue = false;
                 if ("true".equalsIgnoreCase(propertiesValue.toString())) {
                     fieldValue = true;

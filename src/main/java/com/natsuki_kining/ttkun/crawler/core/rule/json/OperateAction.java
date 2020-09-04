@@ -35,7 +35,7 @@ public class OperateAction implements IOperateAction {
     }
 
     private IOperateAction getAction(OperateRule operateRule) {
-        IOperateAction action = operateActionMap.get(operateRule.getType() + nameType);
+        IOperateAction action = operateActionMap.get(operateRule.getType() + NAME_TYPE);
         if (action == null) {
             throw new RuleException("找不到 " + operateRule.getType() + " action。");
         }

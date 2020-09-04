@@ -11,7 +11,7 @@ import com.natsuki_kining.ttkun.crawler.model.rule.json.OperateRule;
  **/
 public interface IOperateAction {
 
-    String nameType = "Action";
+    String NAME_TYPE = "Action";
 
     Object action(OperateRule operateRule);
 

@@ -67,7 +67,7 @@ public abstract class AbstractDownload {
      */
     private byte[] readInputStream(HttpResponse response) throws Exception {
         String threadName = Thread.currentThread().getName();
-        boolean isMainThread = threadName.equals("main");
+        boolean isMainThread = "main".equals(threadName);
 
         Long intSize = response.getEntity().getContentLength();
         byte[] byteArray = null;
